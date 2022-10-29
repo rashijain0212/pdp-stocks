@@ -76,6 +76,11 @@ public interface Controller {
 
   String handleTotalStockOnCurrentDate(String portfolioName);
 
+  /**
+   * Allows the user to check stock price on different date.
+   *
+   * @param portfolioName name of the portfolio
+   */
   void handleTotalStockOnDifferentDate(String portfolioName);
 
 
