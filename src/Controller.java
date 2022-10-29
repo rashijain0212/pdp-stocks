@@ -1,260 +1,82 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-public class Controller {
-  View viewer = new View();
-  Model models = new Model();
-  public void start(){
-    //tell the model to get the data ready.
-    models.getContentsFromFile();
 
-    //tell the view to display starting screen
-    boolean initialOptions = false;
-    while(!initialOptions){
-      int choice = viewer.displayInitialOptions();
+/**
+ * This is an interface for controller for stock.
+ * It controls the data flow into model object and updates the view whenever data changes.
+ * It keeps view and model separate.
+ */
+public interface Controller {
+  /**
+   * This method views all the initial options to the user at start of program.
+   */
+  void start();
 
-      switch (choice){
-        case 1:
-          handlePortfolioCreation();
-          break;
-        case 2:
-          handlePortfolioComposition();
-          break;
-        case 3:
-          handleFastForwardTime();
-          break;
-        case 4:
-          handleTotalStockValueDisplay();
-          break;
-        case 5:
-          initialOptions = true;
-          break;
-        default:
-          viewer.displaySwitchCaseDefault();
-          break;
-      }
-      //change this in switch case
-      if(choice==5) break;
-    }
-  }
+  /**
+   * This method handles the portfolio creations.
+   * It shows further options for new portfolio.
+   */
 
-  void handlePortfolioCreation(){
-    boolean portfolioOptionExit = false;
-    boolean nameEntered = false;
-    String name = "";
-    List<List<String>> dataToAdd = new ArrayList<>();
-    String currentDate = models.getCurrentDate();
-    while(!portfolioOptionExit){
-      int ans = viewer.portfolioCreation();
-      switch(ans){
-        case 1:
-          if(nameEntered&&dataToAdd.size()!=0){
-            viewer.displayCannotEnterNameAgain();
-            break;
-          }
-          name = handleGetPortfolioName();
-          if(name.length()!=0){
-            nameEntered = true;
-          }
-          break;
-        case 2:
-          handleShowCompanies();
-          break;
-        case 3:
-          if(!nameEntered){
-            viewer.displayCannotProceedWithoutName();
-            break;
-          }
-          List<String> newData = handleAddACompanyStock();
-          if(newData ==null){
-            break;
-          }
-          //check if the company name exists
-          if(models.checkIfCompanyExists(newData.get(0))){
-            dataToAdd.add(newData);
-          }
-          else{
-            viewer.displayNoSuchCompanyExist();
-          }
-          break;
-        case 4:
-          portfolioOptionExit = true;
-          if(dataToAdd.size()!=0){
-            addPortfolioData(dataToAdd,name,currentDate);
-            models.savePortfolio();
-            break;
-          }
-          else{
-            name = "";
-            nameEntered = false;
-          }
-          break;
-        default:
-          viewer.displaySwitchCaseDefault();
-          break;
-      }
-    }
-  }
+  void handlePortfolioCreation();
 
-  void handlePortfolioComposition(){
-    HashMap<String,ArrayList<ArrayList<String>>> portfolio = models.getPortfolio();
-    if(portfolio.size()==0){
-      viewer.displayPortfolioIsEmpty();
-    }
-    else{
-      viewer.displayPortfolio(portfolio);
-    }
+  /**
+   * This method handles the composition of portfolio.
+   * It shows further options for already created portfolio.
+   */
+  void handlePortfolioComposition();
 
-  }
+  /**
+   * This method shows the futuristic prices of the stocks.
+   */
+  void handleFastForwardTime();
 
-  void handleFastForwardTime(){
-    boolean continueLoop = false;
-    while(!continueLoop){
-      int choice = viewer.displaySelectDateOption(models.getCurrentDate());
-      switch (choice){
-        case 1:
-          handleDateSelection();
-          break;
-        case 2:
-          continueLoop = true;
-          break;
-        default:
-          viewer.displaySwitchCaseDefault();
-          break;
-      }
-    }
+  /**
+   * Displays the total value of a particular portfolio.
+   */
+  void handleTotalStockValueDisplay();
 
-  }
+  /**
+   * Displays all the companies stocks listed.
+   */
+  void handleShowCompanies();
 
-  void handleTotalStockValueDisplay(){
-    boolean continueLoop = false;
-    String name = "";
-    int num = models.getPortfolioSize();
-    if(num==0){
-      viewer.displayNoPortfolio();
-    }
-    else{
-      while(!continueLoop){
-        int choice = viewer.displayStockValueMenu();
-        switch (choice){
-          case 1:
-            if(name.length()!=0){
-              viewer.displayPortfolioNameAlreadyEntered();
-              break;
-            }
-            name = viewer.displayEnterNameForPortfolio();
-            if(!models.portfolioContainsCertainKey(name)){
-              viewer.displayNoPortfolio();
-              name = "";
-            }
-            break;
-          case 2:
-            if(name.length()==0){
-              viewer.displayNameCannotBeEmpty();
-              break;
-            }
-            String result = handleTotalStockOnCurrentDate(name);
-            if(result=="Failure"){
-              name = "";
-              viewer.displayNoSuchPortfolio();
-            }
-            break;
-          case 3:
-            if(name.length()==0){
-              viewer.displayNameCannotBeEmpty();
-              break;
-            }
-            handleTotalStockOnDifferentDate(name);
-            break;
-          case 4:
-            continueLoop = true;
-            break;
-          default:
-            viewer.displaySwitchCaseDefault();
-            break;
-        }
-      }
-    }
-  }
+  /**
+   * Lets the user add the name of company for which he wants to buy stocks.
+   *
+   * @return The list of name of company with number of stocks.
+   */
+  List<String> handleAddACompanyStock();
 
-  void handleShowCompanies(){
-    List<String> stockCompanyName = models.getStockCompanyName();
-    viewer.displayCompanies(stockCompanyName);
-  }
+  /**
+   * Gets the name to the portfolio already created.
+   *
+   * @return Returns the name entered by user
+   */
+  String handleGetPortfolioName();
 
-  List<String> handleAddACompanyStock(){
-    List<String> dataToAdd = viewer.getCompanyNameAndNumberOfStocks();
-    if(dataToAdd.get(0).length()==0){
-      viewer.displayNameCannotBeEmpty();
-      dataToAdd = null;
-    }
-    else{
-      double stockNumber = Double.parseDouble(dataToAdd.get(1));
-      if(stockNumber<=0){
-        viewer.displayStockNumberCannotBeLessThanOrEqualToZero();
-        dataToAdd = null;
-      }
-    }
-    return dataToAdd;
-  }
+  /**
+   * Creates a portfolio with the company name, number of stocks and name of portfolio.
+   *
+   * @param dataToAdd   Name and number of stocks of the company
+   * @param name        name of the portfolio
+   * @param currentDate date of creation of portfolio
+   */
+  void addPortfolioData(List<List<String>> dataToAdd, String name, String currentDate);
 
-  String handleGetPortfolioName(){
-    String name = viewer.displayEnterNameForPortfolio();
-    if(name.length()==0){
-      viewer.displayNameCannotBeEmpty();
-      return "";
-    }
-    boolean alreadyContainsTheName = models.hasAnotherPortfolioWithSameName(name);
-    if(alreadyContainsTheName){
-      viewer.displayAlreadyHaveAnotherPortfolioWithSameName();
-      return "";
-    }
-    return name;
-  }
+  /**
+   * Allows user to select a date for future price projection of stocks.
+   */
+  void handleDateSelection();
 
-  void addPortfolioData(List<List<String>> dataToAdd,String name,String currentDate){
-    models.addsFinalDataToPortfolio(dataToAdd,name,currentDate);
-  }
+  /**
+   * Shows the total stock on current date with the user.
+   *
+   * @param portfolioName name of the portfolio
+   * @return success or failure of the method.
+   */
 
-  void handleDateSelection(){
-    LocalDate startingDate = LocalDate.parse(models.getStartingDate());
-    LocalDate currentDate = LocalDate.parse(models.getCurrentDate());
-    LocalDate lastDate =  LocalDate.parse(models.getEndingDate());
+  String handleTotalStockOnCurrentDate(String portfolioName);
 
-    String dateChange = viewer.displayDateSelectionMenu();
-    if(dateChange.length()!=0){
-      boolean checker = models.isValidDate(dateChange);
-      if(checker){
-        currentDate = LocalDate.parse(dateChange);
-        models.setCurrentDate(currentDate.toString());
-      }
-      else{
-        viewer.displayDateIsNotValid();
-      }
-    }
-  }
+  void handleTotalStockOnDifferentDate(String portfolioName);
 
-  String handleTotalStockOnCurrentDate(String portfolioName){
-    double totalValue = models.getTotalStockValue(portfolioName,models.getCurrentDate());
-    if(totalValue==-1){
-      return "Failure";
-    }
-    viewer.displayTotalStockValue(portfolioName,models.getCurrentDate(),totalValue);
-    return "Success";
-  }
 
-  void handleTotalStockOnDifferentDate(String portfolioName){
-    int choice = viewer.displaySelectDateOption(models.getCurrentDate());
-    if(choice==1){
-      String dateWishToChange = viewer.displayDateSelectionMenu();
-      double amount = models.getTotalStockValue(portfolioName,dateWishToChange);
-      viewer.displayTotalStockValue(portfolioName,dateWishToChange,amount);
-    }
-    else if(choice==2){
-    }
-    else{
-      viewer.displaySwitchCaseDefault();
-    }
-  }
 }

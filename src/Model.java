@@ -63,7 +63,7 @@ public class Model {
       String filepath = stockCompanies.get(i);
       try {
         data = new String(Files.readAllBytes(Path.of(
-                "C:\\Users\\96ras\\Desktop\\pdp-stocks\\src\\stockData\\"+filepath)));
+                "C:\\Users\\96ras\\Desktop\\stocks\\src\\stockData\\"+filepath)));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
