@@ -261,8 +261,7 @@ public class ControllerImpl implements Controller {
       viewer.displayOnlyIntegers();
       sc.next();
     }
-    List<String> dataToAdd = List.of(companyName, new BigDecimal(numberOfStocks)
-            .toPlainString());
+    List<String> dataToAdd = List.of(companyName, new BigDecimal(numberOfStocks).toPlainString());
     if (dataToAdd.get(0).length() == 0) {
       viewer.displayNameCannotBeEmpty();
       dataToAdd = null;
@@ -370,8 +369,7 @@ public class ControllerImpl implements Controller {
     if (totalValue == -1) {
       return "Failure";
     }
-    viewer.displayTotalStockValue(portfolioName, models.getCurrentDate(), new BigDecimal(totalValue)
-            .toPlainString());
+    viewer.displayTotalStockValue(portfolioName, models.getCurrentDate(), new BigDecimal(totalValue).toPlainString());
     return "Success";
   }
 
@@ -436,8 +434,7 @@ public class ControllerImpl implements Controller {
         boolean checker = models.setContainsGivenDate(dateWishToChange);
         if (checker) {
           double amount = models.getTotalStockValue(portfolioName, dateWishToChange);
-          viewer.displayTotalStockValue(portfolioName, dateWishToChange, new BigDecimal(amount)
-                  .toPlainString());
+          viewer.displayTotalStockValue(portfolioName, dateWishToChange, new BigDecimal(amount).toPlainString());
         } else {
           viewer.displayNoStockDataForGivenDate();
         }
