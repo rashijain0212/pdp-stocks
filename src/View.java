@@ -1,7 +1,11 @@
+/**
+ * This the view class for Stocks.
+ * It represents the visualization of the data that model contains.
+ */
 public class View {
 
   /**
-   *
+   * Displays the initial options that will be visible to user on start of program.
    */
   void displayInitialOptions() {
     System.out.println("1.Create Portfolio");
@@ -14,14 +18,14 @@ public class View {
   }
 
   /**
-   *
+   * Displays only integers are valid values.
    */
   void displayOnlyIntegers() {
     System.out.println("Enter only valid Integers");
   }
 
   /**
-   *
+   * Displays to enter a valid option.
    */
   void displaySwitchCaseDefault() {
     System.out.println("Enter an valid option.");
@@ -29,7 +33,7 @@ public class View {
   }
 
   /**
-   *
+   * Displays options if user wants to create a new portfolio.
    */
   void portfolioCreation() {
     System.out.println("1.Give a name for the current Portfolio");
@@ -40,22 +44,24 @@ public class View {
   }
 
   /**
-   * @param stockCompanyName
-   * @param number
+   * Displays the name of companies with number of stock.
+   *
+   * @param stockCompanyName company name
+   * @param number           number of stocks.
    */
   void displayCompanies(String stockCompanyName, int number) {
     System.out.println(number + "." + stockCompanyName);
   }
 
   /**
-   *
+   * Display an empty line.
    */
   void displayEmptyLine() {
     System.out.println();
   }
 
   /**
-   *
+   * Display message that user cant change the name of portfolio.
    */
   void displayCannotEnterNameAgain() {
     System.out.println("You already entered Name for this current Portfolio,cannot change Name.");
@@ -63,7 +69,7 @@ public class View {
   }
 
   /**
-   *
+   * display message that name is mandatory for portfolio.
    */
   void displayCannotProceedWithoutName() {
     System.out.println("Please Enter a name for the portfolio first.");
@@ -71,7 +77,7 @@ public class View {
   }
 
   /**
-   *
+   * Display enter name for portfolio.
    */
   void displayEnterNameForPortfolio() {
     System.out.println("Enter Name of the Portfolio:");
@@ -79,7 +85,7 @@ public class View {
   }
 
   /**
-   *
+   * Displays that name cannot be empty.
    */
   void displayNameCannotBeEmpty() {
     System.out.println("Name cannot be empty. Enter at least one character");
@@ -87,7 +93,7 @@ public class View {
   }
 
   /**
-   *
+   * Display if the portfolio name already exists.
    */
   void displayAlreadyHaveAnotherPortfolioWithSameName() {
     System.out.println("You already have another Portfolio with the same name.");
@@ -95,7 +101,7 @@ public class View {
   }
 
   /**
-   *
+   * Display message for user to enter company name.
    */
   void askForCompanyName() {
     System.out.println("Enter the company name:");
@@ -103,7 +109,7 @@ public class View {
   }
 
   /**
-   *
+   * Display message for user to enter number of stocks of company.
    */
   void askForNumberOfStocks() {
     System.out.println("Enter number of stocks:");
@@ -111,7 +117,7 @@ public class View {
   }
 
   /**
-   *
+   * Display message for the value of stock cannot be less than or equal 0.
    */
   void displayStockNumberCannotBeLessThanOrEqualToZero() {
     System.out.println("Stock value cannot be less than or equal to zero. Please enter a valid" + "number");
@@ -119,7 +125,7 @@ public class View {
   }
 
   /**
-   *
+   * Displays message that no such company exists.
    */
   void displayNoSuchCompanyExist() {
     System.out.println("There is no such company, enter using the list of companies available");
@@ -127,28 +133,32 @@ public class View {
   }
 
   /**
-   * @param currPortfolio
+   * Displays current portfolio name.
+   *
+   * @param currPortfolio name of current portfolio
    */
   void displayPortfolioName(String currPortfolio) {
     System.out.println("Portfolio: " + currPortfolio);
   }
 
   /**
-   *
+   * Displays data in table layout.
    */
   void displayTableLayout() {
     System.out.println("Company\t\tStock-Numbers\t\tDate-obtained");
   }
 
   /**
-   * @param contents
+   * Displays content of portfolio.
+   *
+   * @param contents content in string form.
    */
   void displayContentsOfPortfolio(String contents) {
     System.out.print(contents + "\t\t\t");
   }
 
   /**
-   *
+   * Display message if portfolio is empty.
    */
   void displayPortfolioIsEmpty() {
     System.out.println("Portfolio is empty, cannot view composition");
@@ -156,7 +166,9 @@ public class View {
   }
 
   /**
-   * @param currentDate
+   * Display options of select date.
+   *
+   * @param currentDate Date entered.
    */
   void displaySelectDateOption(String currentDate) {
     System.out.println("Current Date: " + currentDate);
@@ -167,35 +179,35 @@ public class View {
   }
 
   /**
-   *
+   * Display message to input date.
    */
   void askForDayOfTheMonth() {
     System.out.println("Enter the day of the month in number(1-31): ");
   }
 
   /**
-   *
+   * Display message to input month.
    */
   void askForMonth() {
     System.out.println("Enter the month in number(1-12):");
   }
 
   /**
-   *
+   * Display message to input year.
    */
   void askForYear() {
     System.out.println("Enter the year you wish to jump to(2001 - 2022):");
   }
 
   /**
-   *
+   * Display message to input valid inputs.
    */
   void displayEnterValidDetailsForDate() {
     System.out.println("Enter valid details.");
   }
 
   /**
-   *
+   * Display message to show that entered date is invalid.
    */
   void displayDateIsNotValid() {
     System.out.println("The entered date is not a valid date.");
@@ -203,7 +215,7 @@ public class View {
   }
 
   /**
-   *
+   * Display message options for stock values.
    */
   void displayStockValueMenu() {
     System.out.println("1.Enter the portfolio name to get value for");
@@ -214,7 +226,7 @@ public class View {
   }
 
   /**
-   *
+   * Displays if the user has already entered name for portfolio.
    */
   void displayPortfolioNameAlreadyEntered() {
     System.out.println("You already entered name for portfolio. Choose option 2 or 3 or exit.");
@@ -222,9 +234,11 @@ public class View {
   }
 
   /**
-   * @param portfolioName
-   * @param currentDate
-   * @param totalValue
+   * Displays data of a particular portfolio.
+   *
+   * @param portfolioName name of the portfolio
+   * @param currentDate   date of creation of portfolio
+   * @param totalValue    total value of stocks
    */
 
   void displayTotalStockValue(String portfolioName, String currentDate, String totalValue) {
@@ -235,7 +249,7 @@ public class View {
   }
 
   /**
-   *
+   * Displays message if no portfolio exists for the name entered.
    */
   void displayNoSuchPortfolio() {
     System.out.println("No such portfolio exists, enter name again");
@@ -243,7 +257,7 @@ public class View {
   }
 
   /**
-   *
+   * Display message to create portfolio and then check value.
    */
   void displayNoPortfolio() {
     System.out.println("Create portfolio first and then check the value.");
@@ -251,7 +265,7 @@ public class View {
   }
 
   /**
-   *
+   * Display is no stock is present for the entered day.
    */
   void displayNoStockDataForGivenDate() {
     System.out.println("There is no stock data for given date, please enter another date");
