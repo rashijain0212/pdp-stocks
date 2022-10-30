@@ -1,11 +1,20 @@
 public class Main {
   public static void main(String[] args){
-    Controller control = new ControllerImpl();
+    ControllerImpl control = new ControllerImpl();
     control.start();
-    //display values in more well manner
-    //persist data.
+    //finish implementing saving part, add it to interface
 
-    //display all the available portfolios
-    //handle edge cases of dates(check if provided date has any value in hashmap)
+    //finish comments
+
+    //confirm if we can limit number of companies?
+
+    //high priority
+    //adding same company stocks multiple times(need to consolidate)
+
+
+    //final changes
+    //change arraylist and hashmap
+    //display values in more well manner
+    //display all the available portfolios? -> needed or not
   }
 }
