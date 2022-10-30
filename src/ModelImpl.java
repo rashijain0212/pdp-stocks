@@ -13,9 +13,13 @@ import java.util.Set;
 public class ModelImpl implements Model {
 
   //List of the companies' data.
-  List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt", "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt", "SBUX.txt", "WFC.txt");
+  List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt",
+          "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt",
+          "SBUX.txt", "WFC.txt");
 
-  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS", "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT", "ORACLE", "STARBUCKS", "WELLS FARGO");
+  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS",
+          "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT",
+          "ORACLE", "STARBUCKS", "WELLS FARGO");
 
 
   //ArrayList of HashMap containing StockData of companies with date as key and stock value on
@@ -88,7 +92,8 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd, String name, String currentDate) {
+  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd,
+                                       String name, String currentDate) {
     ArrayList<ArrayList<String>> finalData = new ArrayList<>();
     ArrayList<String> data;
     for (List<String> strings : dataToAdd) {
@@ -130,7 +135,8 @@ public class ModelImpl implements Model {
 
       double price;
       try {
-        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(company.toUpperCase())).get(currentDate));
+        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(
+                company.toUpperCase())).get(currentDate));
         ans *= (price * numbers);
       } catch (NullPointerException e) {
         //caught
