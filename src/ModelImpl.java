@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,21 +13,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ModelImpl implements Model {
+public class ModelImpl implements Model{
 
   //List of the companies' data.
-  List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt",
-          "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt",
-          "SBUX.txt", "WFC.txt");
+  List<String> stockCompanies = List.of("AAPL.txt","AMZN.txt","ATVI.txt","BCS.txt",
+          "CAJ.txt","CSCO.txt","DIS.txt","JPM.txt","MCD.txt","MSFT.txt","ORCL.txt","SBUX.txt"
+          ,"WFC.txt");
 
-  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS",
-          "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT",
-          "ORACLE", "STARBUCKS", "WELLS FARGO");
+  List<String> stockCompanyName = List.of("APPLE","AMAZON","ACTIVISION","BARCLAYS"
+          ,"CANON INC","CISCO SYSTEMS","DISNEY","JP MORGAN","MCDONALD","MICROSOFT"
+          ,"ORACLE","STARBUCKS","WELLS FARGO");
 
 
   //ArrayList of HashMap containing StockData of companies with date as key and stock value on
   //that date as value.
-  ArrayList<HashMap<String, String>> stockData = new ArrayList<>();
+  ArrayList<HashMap<String,String>> stockData = new ArrayList<>();
   String startingDate = "2001-02-02";
   //String endingDate = "2022-10-25";
 
@@ -33,39 +36,35 @@ public class ModelImpl implements Model {
   Set<String> listOfDates = new HashSet<>();
   String data;
 
-  HashMap<String, ArrayList<ArrayList<String>>> portfolio = new HashMap<>();
+  HashMap<String, List<List<String>>> portfolio = new HashMap<>();
 
   //getter for currentDate
   @Override
-  public String getCurrentDate() {
+  public String getCurrentDate(){
     return currentDate;
-  }
-
-  //setter for currentDate
-  @Override
-  public void setCurrentDate(String currentDate) {
-    this.currentDate = currentDate;
   }
 
   //getter for portfolio
   @Override
-  public HashMap<String, ArrayList<ArrayList<String>>> getPortfolio() {
+  public HashMap<String, List<List<String>>> getPortfolio(){
     return portfolio;
   }
 
   //getter for stockCompanyName
   @Override
-  public List<String> getStockCompanyName() {
+  public List<String> getStockCompanyName(){
     return stockCompanyName;
   }
+
 
   //get All the stock data from the given text file and create a hashMap for each company,
   //add the hashmap to the stockData arraylist.
   @Override
-  public void getContentsFromFile() {
+  public void getContentsFromFile(){
     for (String filepath : stockCompanies) {
       try {
-        data = new String(Files.readAllBytes(Path.of("src\\stockData\\" + filepath)));
+        data = new String(Files.readAllBytes(Path.of(
+                "src\\stockData\\" + filepath)));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -74,8 +73,8 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public HashMap<String, String> convertingStringToHashMap(String data) {
-    HashMap<String, String> stockDateAndPrice = new HashMap<>();
+  public HashMap<String,String> convertingStringToHashMap(String data){
+    HashMap<String,String> stockDateAndPrice = new HashMap<>();
     String[] breakingDownFullString = data.split("\r?\n|\r");
     for (String s : breakingDownFullString) {
       String[] separatingWithComa = s.split(",");
@@ -87,56 +86,85 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public boolean hasAnotherPortfolioWithSameName(String name) {
+  public boolean hasAnotherPortfolioWithSameName(String name){
     return portfolio.containsKey(name);
   }
 
   @Override
-  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd,
-                                       String name, String currentDate) {
-    ArrayList<ArrayList<String>> finalData = new ArrayList<>();
+  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd,String name,String currentDate){
+    ArrayList<List<String>> finalData = new ArrayList<>();
     ArrayList<String> data;
     for (List<String> strings : dataToAdd) {
       data = new ArrayList<>(strings);
       finalData.add(data);
       data.add(currentDate);
     }
-    portfolio.put(name, finalData);
+    portfolio.put(name,finalData);
   }
 
   @Override
-  public boolean checkIfCompanyExists(String name) {
+  public boolean checkIfCompanyExists(String name){
     return stockCompanyName.contains(name.toUpperCase());
   }
 
-  public void savePortfolio() {
-    //handle the case to save the portfolio
+  @Override
+  public void savePortfolio(){
+    List<String> names = new ArrayList<>();
+    portfolio.forEach((key,value)->names.add(key));
+    Json json = new Json(this.portfolio,names);
+
+    List<String> jsonPortfolios = json.jsonFormatFromHashMap();
+
+    String path = "src\\portfolios\\";
+
+    for(int i=0;i<jsonPortfolios.size();i++){
+      String newPath = path;
+      newPath+=names.get(i);
+      newPath+=".txt";
+      try {
+        File myObj = new File(newPath);
+        Files.writeString(Path.of(newPath),jsonPortfolios.get(i));
+        myObj.setReadOnly();
+      } catch (FileNotFoundException e) {
+        //handled
+      } catch (IOException e) {
+        //
+      }
+    }
   }
 
   @Override
-  public boolean isValidDate(String date) {
-    try {
+  public boolean isValidDate(String date){
+    try{
       LocalDate.parse(date);
       return true;
-    } catch (DateTimeParseException e) {
+    }
+    catch (DateTimeParseException e) {
       return false;
     }
   }
 
+  //setter for currentDate
+  @Override
+  public void setCurrentDate(String currentDate){
+    this.currentDate = currentDate;
+  }
+
   //if there is no stock data on certain date, we add 0.
   @Override
-  public double getTotalStockValue(String portfolioName, String currentDate) {
+  public double getTotalStockValue(String portfolioName,String currentDate){
     double ans = 1;
 
-    ArrayList<ArrayList<String>> contents = portfolio.get(portfolioName);
-    for (ArrayList<String> content : contents) {
+    List<List<String>> contents = portfolio.get(portfolioName);
+    for (List<String> content : contents) {
       String company = content.get(0);
       double numbers = Double.parseDouble(content.get(1));
 
       double price;
       try {
-        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(
-                company.toUpperCase())).get(currentDate));
+        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(company
+                        .toUpperCase()))
+                .get(currentDate));
         ans *= (price * numbers);
       } catch (NullPointerException e) {
         //caught
@@ -146,36 +174,39 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public int getPortfolioSize() {
+  public int getPortfolioSize(){
     return portfolio.size();
   }
 
   @Override
-  public boolean portfolioContainsCertainKey(String name) {
+  public boolean portfolioContainsCertainKey(String name){
     return portfolio.containsKey(name);
   }
 
   @Override
-  public String makeStringDate(int day, int month, int year) {
+  public String makeStringDate(int day,int month,int year){
     String dateVal;
     String monthVal;
-    if (day <= 9) {
-      dateVal = "0" + day;
-    } else {
+    if(day<=9){
+      dateVal = "0"+day;
+    }
+    else{
       dateVal = String.valueOf(day);
     }
-    if (month <= 9) {
-      monthVal = "0" + month;
-    } else {
+    if(month<=9){
+      monthVal = "0"+month;
+    }
+    else{
       monthVal = String.valueOf(month);
     }
 
-    return year + "-" + monthVal + "-" + dateVal;
+    return year+"-"+monthVal+"-"
+            +dateVal;
   }
 
   @Override
-  public void makeListOfDates() {
-    Map<String, String> container;
+  public void makeListOfDates(){
+    Map<String,String> container;
     for (HashMap<String, String> stockDatum : stockData) {
       container = stockDatum;
       container.forEach((key, value) -> listOfDates.add(key));
@@ -183,18 +214,82 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public boolean setContainsGivenDate(String date) {
+  public boolean setContainsGivenDate(String date){
     return listOfDates.contains(date);
   }
 
   @Override
-  public ArrayList<String> getPortfolioKeys() {
+  public ArrayList<String> getPortfolioKeys(){
     return new ArrayList<>(portfolio.keySet());
   }
 
   @Override
-  public LocalDate localDateParser(String currentDate) {
+  public LocalDate localDateParser(String currentDate){
     return LocalDate.parse(currentDate);
+  }
+
+
+  @Override
+  public HashMap<String,List<List<String>>> parseJson(String data){
+    Json json = new Json();
+    HashMap<String,List<List<String>>> filePortfolio = json.jsonParser(data);
+    return filePortfolio;
+  }
+
+  @Override
+  public String readFromFile(String path) {
+    StringBuilder output = new StringBuilder("");
+    try{
+      FileReader filereader = new FileReader(path);
+      int c = 0;
+      while((c=filereader.read())!=-1){
+        char character = (char)c;
+        if(character=='"'){
+          output.append("\"");
+        }
+        else{
+          output.append(character);
+        }
+      }
+    }
+    catch (IOException e) {
+      return "Failure";
+      //throw new RuntimeException(e);
+    }
+
+    return output.toString();
+  }
+
+  @Override
+  public boolean checkParsedPortfolio(Map<String,List<List<String>>> parsedPortfolio){
+    List<String> keyset = new ArrayList<>(parsedPortfolio.keySet());
+    List<List<String>> contents;
+    List<String> insideContents;
+    for (String s : keyset) {
+      contents = parsedPortfolio.get(s);
+      for (List<String> content : contents) {
+        insideContents = new ArrayList<>(content);
+        if (insideContents.size() != 3) {
+          return false;
+        }
+        try {
+          Double.parseDouble(insideContents.get(1));
+        } catch (NumberFormatException e) {
+          return false;
+        }
+        try {
+          LocalDate.parse(insideContents.get(2));
+        } catch (DateTimeParseException e) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public void setPortfolio(HashMap<String, List<List<String>>> portfolio) {
+    this.portfolio = portfolio;
   }
 
 }
