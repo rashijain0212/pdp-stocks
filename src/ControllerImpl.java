@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -45,17 +46,14 @@ public class ControllerImpl implements Controller {
           handleTotalStockValueDisplay();
           break;
         case 5:
-          handleUploadFile();
-          break;
-        case 6:
           initialOptions = true;
-          models.savePortfolio();
-          viewer.displayAllPortfolioSaved("src\\portfolios\\");
           break;
         default:
           viewer.displaySwitchCaseDefault();
           break;
       }
+      //change this in switch case
+      if (choice == 5) break;
     }
   }
 
@@ -102,7 +100,24 @@ public class ControllerImpl implements Controller {
           }
           //check if the company name exists
           if (models.checkIfCompanyExists(newData.get(0))) {
-            dataToAdd.add(newData);
+            if (dataToAdd.toArray().length > 0) {
+              boolean check = false;
+              for (int i = 0; i < dataToAdd.toArray().length; i++) {
+                if (Objects.equals(dataToAdd.get(i).get(0), newData.get(0))) {
+                  check = true;
+                  BigDecimal totalValue = new BigDecimal(Double.parseDouble(dataToAdd.get(i).get(1)) +
+                          Double.parseDouble(newData.get(1)));
+                  dataToAdd.get(i).set(1, totalValue.toPlainString()
+                  );
+                }
+              }
+              if (!check) {
+                dataToAdd.add(newData);
+              }
+            } else {
+              dataToAdd.add(newData);
+            }
+
           } else {
             viewer.displayNoSuchCompanyExist();
           }
@@ -111,14 +126,12 @@ public class ControllerImpl implements Controller {
           portfolioOptionExit = true;
           if (dataToAdd.size() != 0) {
             addPortfolioData(dataToAdd, name, currentDate);
-            //models.savePortfolio();
+            models.savePortfolio();
             break;
           } else {
             name = "";
             nameEntered = false;
           }
-
-          //sanity check
           break;
         default:
           viewer.displaySwitchCaseDefault();
@@ -129,16 +142,16 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void handlePortfolioComposition() {
-    HashMap<String, List<List<String>>> portfolio = models.getPortfolio();
+    HashMap<String, ArrayList<ArrayList<String>>> portfolio = models.getPortfolio();
     if (portfolio.size() == 0) {
       viewer.displayPortfolioIsEmpty();
     } else {
       ArrayList<String> portfolioNames = models.getPortfolioKeys();
       for (String curr : portfolioNames) {
         viewer.displayPortfolioName(curr);
-        List<List<String>> contents = portfolio.get(curr);
+        ArrayList<ArrayList<String>> contents = portfolio.get(curr);
         viewer.displayTableLayout();
-        for (List<String> content : contents) {
+        for (ArrayList<String> content : contents) {
           for (String s : content) {
             viewer.displayContentsOfPortfolio(s);
           }
@@ -266,8 +279,8 @@ public class ControllerImpl implements Controller {
       viewer.displayOnlyIntegers();
       sc.next();
     }
-    List<String> dataToAdd = List.of(companyName, new BigDecimal(numberOfStocks)
-            .toPlainString());
+    String[] array = {companyName, new BigDecimal(numberOfStocks).toPlainString()};
+    List<String> dataToAdd = new ArrayList<String>(Arrays.asList(array));
     if (dataToAdd.get(0).length() == 0) {
       viewer.displayNameCannotBeEmpty();
       dataToAdd = null;
@@ -375,8 +388,8 @@ public class ControllerImpl implements Controller {
     if (totalValue == -1) {
       return "Failure";
     }
-    viewer.displayTotalStockValue(portfolioName, models.getCurrentDate(), new BigDecimal(totalValue)
-            .toPlainString());
+    viewer.displayTotalStockValue(portfolioName, models.getCurrentDate(),
+            new BigDecimal(totalValue).toPlainString());
     return "Success";
   }
 
@@ -441,8 +454,8 @@ public class ControllerImpl implements Controller {
         boolean checker = models.setContainsGivenDate(dateWishToChange);
         if (checker) {
           double amount = models.getTotalStockValue(portfolioName, dateWishToChange);
-          viewer.displayTotalStockValue(portfolioName, dateWishToChange, new BigDecimal(amount)
-                  .toPlainString());
+          viewer.displayTotalStockValue(portfolioName, dateWishToChange,
+                  new BigDecimal(amount).toPlainString());
         } else {
           viewer.displayNoStockDataForGivenDate();
         }
@@ -453,27 +466,5 @@ public class ControllerImpl implements Controller {
     else {
       viewer.displaySwitchCaseDefault();
     }
-  }
-  @Override
-  public void handleUploadFile(){
-    viewer.askForFilePath();
-    sc.nextLine();
-    String filepath = sc.nextLine();
-    String isFileReadSuccessFull = models.readFromFile(filepath);
-    if(isFileReadSuccessFull.equals("Failure")){
-      viewer.displayTheFilePathDoesNotExist();
-      return;
-    }
-    HashMap<String,List<List<String>>> parsedPortfolio = models.parseJson(isFileReadSuccessFull);
-    if(parsedPortfolio==null){
-      viewer.displayDataNotInProperFormat();
-      return;
-    }
-    boolean checker = models.checkParsedPortfolio(parsedPortfolio);
-    if(!checker){
-      viewer.displayDataNotInProperFormat();
-      return;
-    }
-    models.setPortfolio(parsedPortfolio);
   }
 }

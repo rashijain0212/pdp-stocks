@@ -84,8 +84,4 @@ public interface Controller {
   void handleTotalStockOnDifferentDate(String portfolioName);
 
 
-  /**
-   *
-   */
-  void handleUploadFile();
 }
