@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -99,7 +100,24 @@ public class ControllerImpl implements Controller {
           }
           //check if the company name exists
           if (models.checkIfCompanyExists(newData.get(0))) {
-            dataToAdd.add(newData);
+            if (dataToAdd.toArray().length > 0) {
+              boolean check = false;
+              for (int i = 0; i < dataToAdd.toArray().length; i++) {
+                if (Objects.equals(dataToAdd.get(i).get(0), newData.get(0))) {
+                  check = true;
+                  BigDecimal totalValue = new BigDecimal(Double.parseDouble(dataToAdd.get(i).get(1)) +
+                          Double.parseDouble(newData.get(1)));
+                  dataToAdd.get(i).set(1, totalValue.toPlainString()
+                  );
+                }
+              }
+              if (!check) {
+                dataToAdd.add(newData);
+              }
+            } else {
+              dataToAdd.add(newData);
+            }
+
           } else {
             viewer.displayNoSuchCompanyExist();
           }
@@ -261,7 +279,8 @@ public class ControllerImpl implements Controller {
       viewer.displayOnlyIntegers();
       sc.next();
     }
-    List<String> dataToAdd = List.of(companyName, new BigDecimal(numberOfStocks).toPlainString());
+    String[] array = {companyName, new BigDecimal(numberOfStocks).toPlainString()};
+    List<String> dataToAdd = new ArrayList<String>(Arrays.asList(array));
     if (dataToAdd.get(0).length() == 0) {
       viewer.displayNameCannotBeEmpty();
       dataToAdd = null;
