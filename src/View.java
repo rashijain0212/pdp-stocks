@@ -12,7 +12,8 @@ public class View {
     System.out.println("2.Examine Composition of current Portfolio");
     System.out.println("3.Fast forward time");
     System.out.println("4.Determine value of stocks on certain Date");
-    System.out.println("5.Exit");
+    System.out.println("5.Upload a portfolio");
+    System.out.println("6.Exit");
     System.out.println("Choose one of the five options");
     System.out.println();
   }
@@ -271,4 +272,37 @@ public class View {
     System.out.println("There is no stock data for given date, please enter another date");
     System.out.println();
   }
+
+  /**
+   *
+   */
+  void displayAllPortfolioSaved(String path) {
+    System.out.println("All the portfolio created have been saved and It is in the location: " + path);
+    System.out.println();
+  }
+
+  /**
+   *
+   */
+  void askForFilePath() {
+    System.out.println("Enter the file path:");
+    System.out.println();
+  }
+
+  /**
+   *
+   */
+  void displayTheFilePathDoesNotExist() {
+    System.out.println("The file path does not exist, Please Enter a valid path");
+    System.out.println();
+  }
+
+  /**
+   *
+   */
+  void displayDataNotInProperFormat() {
+    System.out.println("The portfolio provided in the text file is not in proper format," + "please look at the documentation");
+    System.out.println();
+  }
+
 }

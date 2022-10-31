@@ -8,6 +8,7 @@ public class Main {
 
     //high priority
     //adding same company stocks multiple times(need to consolidate)
+    //finish comments
 
 
     //final changes
@@ -17,5 +18,17 @@ public class Main {
     // displayEmptyLine in view . purpose?
     // change name askForDayOfTheMonth in view.
     // portfolioContainsCertainKey, makeListOfDates, setContainsGivenDate, localDateParser check this method.what it does in model interface
+
+
+    //details to tell the user
+    //the files created using this program is read only, so if you try to create another
+    //portfolio with same name, it will not be overwritten. Nothing will happen if you use already
+    //existing portfolio name.
+    // setPortfolio check this function in model file
+    // checkParsedPortfolio in model
+
+    //mention in deliverable that we support only certain company stocks
+
+    //each text file provided as input should contain only one portfolio
   }
 }

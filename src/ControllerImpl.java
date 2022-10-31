@@ -46,14 +46,17 @@ public class ControllerImpl implements Controller {
           handleTotalStockValueDisplay();
           break;
         case 5:
+          handleUploadFile();
+          break;
+        case 6:
           initialOptions = true;
+          models.savePortfolio();
+          viewer.displayAllPortfolioSaved("src\\portfolios\\");
           break;
         default:
           viewer.displaySwitchCaseDefault();
           break;
       }
-      //change this in switch case
-      if (choice == 5) break;
     }
   }
 
@@ -126,12 +129,13 @@ public class ControllerImpl implements Controller {
           portfolioOptionExit = true;
           if (dataToAdd.size() != 0) {
             addPortfolioData(dataToAdd, name, currentDate);
-            models.savePortfolio();
+            //  models.savePortfolio();
             break;
           } else {
             name = "";
             nameEntered = false;
           }
+          //sanity check
           break;
         default:
           viewer.displaySwitchCaseDefault();
@@ -142,16 +146,16 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void handlePortfolioComposition() {
-    HashMap<String, ArrayList<ArrayList<String>>> portfolio = models.getPortfolio();
+    HashMap<String, List<List<String>>> portfolio = models.getPortfolio();
     if (portfolio.size() == 0) {
       viewer.displayPortfolioIsEmpty();
     } else {
       ArrayList<String> portfolioNames = models.getPortfolioKeys();
       for (String curr : portfolioNames) {
         viewer.displayPortfolioName(curr);
-        ArrayList<ArrayList<String>> contents = portfolio.get(curr);
+        List<List<String>> contents = portfolio.get(curr);
         viewer.displayTableLayout();
-        for (ArrayList<String> content : contents) {
+        for (List<String> content : contents) {
           for (String s : content) {
             viewer.displayContentsOfPortfolio(s);
           }
@@ -280,7 +284,7 @@ public class ControllerImpl implements Controller {
       sc.next();
     }
     String[] array = {companyName, new BigDecimal(numberOfStocks).toPlainString()};
-    List<String> dataToAdd = new ArrayList<String>(Arrays.asList(array));
+    List<String> dataToAdd = new ArrayList<>(Arrays.asList(array));
     if (dataToAdd.get(0).length() == 0) {
       viewer.displayNameCannotBeEmpty();
       dataToAdd = null;
@@ -466,5 +470,28 @@ public class ControllerImpl implements Controller {
     else {
       viewer.displaySwitchCaseDefault();
     }
+  }
+
+  @Override
+  public void handleUploadFile() {
+    viewer.askForFilePath();
+    sc.nextLine();
+    String filepath = sc.nextLine();
+    String isFileReadSuccessFull = models.readFromFile(filepath);
+    if (isFileReadSuccessFull.equals("Failure")) {
+      viewer.displayTheFilePathDoesNotExist();
+      return;
+    }
+    HashMap<String, List<List<String>>> parsedPortfolio = models.parseJson(isFileReadSuccessFull);
+    if (parsedPortfolio == null) {
+      viewer.displayDataNotInProperFormat();
+      return;
+    }
+    boolean checker = models.checkParsedPortfolio(parsedPortfolio);
+    if (!checker) {
+      viewer.displayDataNotInProperFormat();
+      return;
+    }
+    models.setPortfolio(parsedPortfolio);
   }
 }

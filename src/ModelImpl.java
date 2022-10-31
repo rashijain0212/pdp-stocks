@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,12 +17,12 @@ public class ModelImpl implements Model {
 
   //List of the companies' data.
   List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt",
-          "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt",
-          "SBUX.txt", "WFC.txt");
+          "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt", "SBUX.txt"
+          , "WFC.txt");
 
-  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS",
-          "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT",
-          "ORACLE", "STARBUCKS", "WELLS FARGO");
+  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS"
+          , "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT"
+          , "ORACLE", "STARBUCKS", "WELLS FARGO");
 
 
   //ArrayList of HashMap containing StockData of companies with date as key and stock value on
@@ -33,7 +36,7 @@ public class ModelImpl implements Model {
   Set<String> listOfDates = new HashSet<>();
   String data;
 
-  HashMap<String, ArrayList<ArrayList<String>>> portfolio = new HashMap<>();
+  HashMap<String, List<List<String>>> portfolio = new HashMap<>();
 
   //getter for currentDate
   @Override
@@ -49,8 +52,13 @@ public class ModelImpl implements Model {
 
   //getter for portfolio
   @Override
-  public HashMap<String, ArrayList<ArrayList<String>>> getPortfolio() {
+  public HashMap<String, List<List<String>>> getPortfolio() {
     return portfolio;
+  }
+
+  @Override
+  public void setPortfolio(HashMap<String, List<List<String>>> portfolio) {
+    this.portfolio = portfolio;
   }
 
   //getter for stockCompanyName
@@ -65,7 +73,8 @@ public class ModelImpl implements Model {
   public void getContentsFromFile() {
     for (String filepath : stockCompanies) {
       try {
-        data = new String(Files.readAllBytes(Path.of("src\\stockData\\" + filepath)));
+        data = new String(Files.readAllBytes(Path.of(
+                "src\\stockData\\" + filepath)));
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -92,9 +101,8 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd,
-                                       String name, String currentDate) {
-    ArrayList<ArrayList<String>> finalData = new ArrayList<>();
+  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd, String name, String currentDate) {
+    ArrayList<List<String>> finalData = new ArrayList<>();
     ArrayList<String> data;
     for (List<String> strings : dataToAdd) {
       data = new ArrayList<>(strings);
@@ -109,8 +117,30 @@ public class ModelImpl implements Model {
     return stockCompanyName.contains(name.toUpperCase());
   }
 
+  @Override
   public void savePortfolio() {
-    //handle the case to save the portfolio
+    List<String> names = new ArrayList<>();
+    portfolio.forEach((key, value) -> names.add(key));
+    Json json = new Json(this.portfolio, names);
+
+    List<String> jsonPortfolios = json.jsonFormatFromHashMap();
+
+    String path = "src\\portfolios\\";
+
+    for (int i = 0; i < jsonPortfolios.size(); i++) {
+      String newPath = path;
+      newPath += names.get(i);
+      newPath += ".txt";
+      try {
+        File myObj = new File(newPath);
+        Files.writeString(Path.of(newPath), jsonPortfolios.get(i));
+        myObj.setReadOnly();
+      } catch (FileNotFoundException e) {
+        //handled
+      } catch (IOException e) {
+        //
+      }
+    }
   }
 
   @Override
@@ -128,15 +158,16 @@ public class ModelImpl implements Model {
   public double getTotalStockValue(String portfolioName, String currentDate) {
     double ans = 1;
 
-    ArrayList<ArrayList<String>> contents = portfolio.get(portfolioName);
-    for (ArrayList<String> content : contents) {
+    List<List<String>> contents = portfolio.get(portfolioName);
+    for (List<String> content : contents) {
       String company = content.get(0);
       double numbers = Double.parseDouble(content.get(1));
 
       double price;
       try {
-        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(
-                company.toUpperCase())).get(currentDate));
+        price = Double.parseDouble(stockData.get(stockCompanyName.indexOf(company
+                        .toUpperCase()))
+                .get(currentDate));
         ans *= (price * numbers);
       } catch (NullPointerException e) {
         //caught
@@ -170,7 +201,8 @@ public class ModelImpl implements Model {
       monthVal = String.valueOf(month);
     }
 
-    return year + "-" + monthVal + "-" + dateVal;
+    return year + "-" + monthVal + "-"
+            + dateVal;
   }
 
   @Override
@@ -195,6 +227,62 @@ public class ModelImpl implements Model {
   @Override
   public LocalDate localDateParser(String currentDate) {
     return LocalDate.parse(currentDate);
+  }
+
+  @Override
+  public HashMap<String, List<List<String>>> parseJson(String data) {
+    Json json = new Json();
+    HashMap<String, List<List<String>>> filePortfolio = json.jsonParser(data);
+    return filePortfolio;
+  }
+
+  @Override
+  public String readFromFile(String path) {
+    StringBuilder output = new StringBuilder();
+    try {
+      FileReader filereader = new FileReader(path);
+      int c = 0;
+      while ((c = filereader.read()) != -1) {
+        char character = (char) c;
+        if (character == '"') {
+          output.append("\"");
+        } else {
+          output.append(character);
+        }
+      }
+    } catch (IOException e) {
+      return "Failure";
+      //throw new RuntimeException(e);
+    }
+
+    return output.toString();
+  }
+
+  @Override
+  public boolean checkParsedPortfolio(Map<String, List<List<String>>> parsedPortfolio) {
+    List<String> keyset = new ArrayList<>(parsedPortfolio.keySet());
+    List<List<String>> contents;
+    List<String> insideContents;
+    for (String s : keyset) {
+      contents = parsedPortfolio.get(s);
+      for (List<String> content : contents) {
+        insideContents = new ArrayList<>(content);
+        if (insideContents.size() != 3) {
+          return false;
+        }
+        try {
+          Double.parseDouble(insideContents.get(1));
+        } catch (NumberFormatException e) {
+          return false;
+        }
+        try {
+          LocalDate.parse(insideContents.get(2));
+        } catch (DateTimeParseException e) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
 }
