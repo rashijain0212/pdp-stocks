@@ -105,7 +105,7 @@ public class ControllerImpl implements Controller {
               for (int i = 0; i < dataToAdd.toArray().length; i++) {
                 if (Objects.equals(dataToAdd.get(i).get(0), newData.get(0))) {
                   check = true;
-                  BigDecimal totalValue = new BigDecimal(Double.parseDouble(dataToAdd.get(i).get(1)) +
+                  BigDecimal totalValue = BigDecimal.valueOf(Double.parseDouble(dataToAdd.get(i).get(1)) +
                           Double.parseDouble(newData.get(1)));
                   dataToAdd.get(i).set(1, totalValue.toPlainString()
                   );
