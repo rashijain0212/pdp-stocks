@@ -32,6 +32,7 @@ public interface Controller {
   /**
    * Displays the total value of a particular portfolio.
    */
+
   void handleTotalStockValueDisplay();
 
   /**
@@ -40,46 +41,51 @@ public interface Controller {
   void handleShowCompanies();
 
   /**
-   * Lets the user add the name of company for which he wants to buy stocks.
+   * This function adds a company stock to the user's portfolio.
    *
-   * @return The list of name of company with number of stocks.
+   * @return ArrayList<String> The list of name of company with number of stocks.
    */
   List<String> handleAddACompanyStock();
 
   /**
-   * Gets the name to the portfolio already created.
+   * Get the name of the portfolio
    *
-   * @return Returns the name entered by user
+   * @return The name of the portfolio.
    */
   String handleGetPortfolioName();
 
   /**
-   * Creates a portfolio with the company name, number of stocks and name of portfolio.
+   * This function takes in a list of lists of strings, a string, and a string, and adds the data to
+   * the portfolio.
    *
-   * @param dataToAdd   Name and number of stocks of the company
-   * @param name        name of the portfolio
-   * @param currentDate date of creation of portfolio
+   * @param dataToAdd   A list of lists of strings. Each list of strings represents a row of data
+   *                    . The
+   *                    first string in the list is name of company, the second string is the
+   *                    number of shares, and the
+   *                    third string is the date.
+   * @param name        The name of the portfolio you want to add data to.
+   * @param currentDate The date of the data you are adding.
    */
   void addPortfolioData(List<List<String>> dataToAdd, String name, String currentDate);
 
   /**
-   * Allows user to select a date for future price projection of stocks.
+   * When the user selects a date, handleDateSelection() is called.
    */
   void handleDateSelection();
 
   /**
-   * Shows the total stock on current date with the user.
+   * Given a portfolio name, return the total stock on the current date.
    *
-   * @param portfolioName name of the portfolio
-   * @return success or failure of the method.
+   * @param portfolioName The name of the portfolio.
+   * @return The total stock value of the portfolio on the current date.
    */
-
   String handleTotalStockOnCurrentDate(String portfolioName);
 
   /**
-   * Allows the user to check stock price on different date.
+   * Given a portfolio name, it will return the total stock value of the portfolio on a different
+   * date.
    *
-   * @param portfolioName name of the portfolio
+   * @param portfolioName The name of the portfolio.
    */
   void handleTotalStockOnDifferentDate(String portfolioName);
 

@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class is the implementation of the Model interface.
+ */
 public class ModelImpl implements Model {
 
   //List of the companies' data.
@@ -101,7 +104,8 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd, String name, String currentDate) {
+  public void addsFinalDataToPortfolio(List<List<String>> dataToAdd, String name,
+                                       String currentDate) {
     ArrayList<List<String>> finalData = new ArrayList<>();
     ArrayList<String> data;
     for (List<String> strings : dataToAdd) {

@@ -34,7 +34,8 @@ public interface Model {
   /**
    * It sets the portfolio of the user.
    *
-   * @param portfolio A HashMap of the portfolio. The key is the name of the portfolio, and the value
+   * @param portfolio A HashMap of the portfolio. The key is the name of the portfolio, and the
+   *                  value
    *                  is a list of lists.
    */
   void setPortfolio(HashMap<String, List<List<String>>> portfolio);
@@ -97,12 +98,11 @@ public interface Model {
   boolean isValidDate(String date);
 
   /**
-   * "Given a portfolio name and a date, return the total value of all the stocks in the portfolio on
-   * that date."
-   * <p>
+   * "Given a portfolio name and a date, return the total value of all the stocks in the
+   * portfolio on that date."
    * The function is a bit more complicated than the previous ones. It takes two parameters: a
-   * portfolio name and a date. It returns a double, which is the total value of all the stocks in the
-   * portfolio on that date
+   * portfolio name and a date. It returns a double, which is the total value of all the stocks
+   * in the portfolio on that date
    *
    * @param portfolioName The name of the portfolio for which the total stock value is to be
    *                      calculated.
@@ -187,8 +187,8 @@ public interface Model {
   String readFromFile(String path);
 
   /**
-   * Given a map of lists of lists of strings, return true if the map is a valid portfolio, and false
-   * otherwise
+   * Given a map of lists of lists of strings, return true if the map is a valid portfolio, and
+   * false otherwise.
    *
    * @param parsedPortfolio The portfolio that was parsed from the input file.
    * @return A boolean value.
