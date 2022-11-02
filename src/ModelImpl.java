@@ -39,7 +39,7 @@ public class ModelImpl implements Model {
   Set<String> listOfDates = new HashSet<>();
   String data;
 
-  HashMap<String, List<List<String>>> portfolio = new HashMap<>();
+  Map<String, List<List<String>>> portfolio = new HashMap<>();
 
   //getter for currentDate
   @Override
@@ -55,12 +55,17 @@ public class ModelImpl implements Model {
 
   //getter for portfolio
   @Override
-  public HashMap<String, List<List<String>>> getPortfolio() {
+  public Map<String, List<List<String>>> getPortfolio() {
     return portfolio;
   }
 
   @Override
   public void setPortfolio(HashMap<String, List<List<String>>> portfolio) {
+    this.portfolio = portfolio;
+  }
+
+  @Override
+  public void setPortfolio(Map<String, List<List<String>>> portfolio) {
     this.portfolio = portfolio;
   }
 
@@ -287,6 +292,14 @@ public class ModelImpl implements Model {
       }
     }
     return true;
+  }
+
+  @Override
+  public String[] getListOfPortfolio() {
+    String[] files;
+    File f = new File("src\\portfolios\\");
+    files = f.list();
+    return files;
   }
 
 }

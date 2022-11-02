@@ -94,5 +94,11 @@ public interface Controller {
    */
   void handleUploadFile();
 
+  /**
+   * This method asks the model {@link ModelImpl#getListOfPortfolio()}  to give it an array of
+   * strings of all the files in the src\\portfolios\\ directory.
+   * Then it tells the view {@link View#displayPortfolioName(String)} to display the portfolio name.
+   */
+  void handleShowPortfolio();
 
 }

@@ -1,10 +1,11 @@
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,9 +13,17 @@ import java.util.Scanner;
  * This is the implementation of a Controller. It has all the working logic
  */
 public class ControllerImpl implements Controller {
-  Scanner sc = new Scanner(System.in);
-  View viewer = new View();
-  ModelImpl models = new ModelImpl();
+  Scanner sc;
+  View viewer;
+  Model models;
+  private final InputStream input;
+
+  public ControllerImpl(Model models, View viewer, InputStream in) {
+    this.models = models;
+    this.viewer = viewer;
+    this.input = in;
+    this.sc = new Scanner(this.input);
+  }
 
   @Override
   public void start() {
@@ -52,8 +61,10 @@ public class ControllerImpl implements Controller {
           handleUploadFile();
           break;
         case 6:
+          handleShowPortfolio();
+          break;
+        case 7:
           initialOptions = true;
-          models.savePortfolio();
           viewer.displayAllPortfolioSaved("src\\portfolios\\");
           break;
         default:
@@ -150,7 +161,7 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void handlePortfolioComposition() {
-    HashMap<String, List<List<String>>> portfolio = models.getPortfolio();
+    Map<String, List<List<String>>> portfolio = models.getPortfolio();
     if (portfolio.size() == 0) {
       viewer.displayPortfolioIsEmpty();
     } else {
@@ -329,7 +340,7 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void handleDateSelection() {
-    LocalDate currentDate = models.localDateParser(models.currentDate);
+    LocalDate currentDate = models.localDateParser(models.getCurrentDate());
 
     String dateChange;
     int day;
@@ -486,7 +497,7 @@ public class ControllerImpl implements Controller {
       viewer.displayTheFilePathDoesNotExist();
       return;
     }
-    HashMap<String, List<List<String>>> parsedPortfolio = models.parseJson(isFileReadSuccessFull);
+    Map<String, List<List<String>>> parsedPortfolio = models.parseJson(isFileReadSuccessFull);
     if (parsedPortfolio == null) {
       viewer.displayDataNotInProperFormat();
       return;
@@ -497,5 +508,18 @@ public class ControllerImpl implements Controller {
       return;
     }
     models.setPortfolio(parsedPortfolio);
+  }
+
+  @Override
+  public void handleShowPortfolio() {
+    String[] files = models.getListOfPortfolio();
+    if (files.length == 0) {
+      viewer.displayNoPortfolio();
+    } else {
+      for (String file : files) {
+        viewer.displayPortfolioName(file);
+      }
+      viewer.displayEmptyLine();
+    }
   }
 }

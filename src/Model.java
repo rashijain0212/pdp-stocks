@@ -24,21 +24,28 @@ public interface Model {
    */
   void setCurrentDate(String currentDate);
 
+
   /**
-   * Given a list of stocks, return a map of the stocks to their prices.
+   * Given a portfolio, return a map of the portfolio's holdings, where the key is the company
+   * name and the value is a list of lists, where each inner list is a list of the holding's
+   * attributes.
    *
    * @return A HashMap with a String as the key and a List of List of Strings as the value.
    */
-  HashMap<String, List<List<String>>> getPortfolio();
+  Map<String, List<List<String>>> getPortfolio();
 
   /**
    * It sets the portfolio of the user.
    *
    * @param portfolio A HashMap of the portfolio. The key is the name of the portfolio, and the
-   *                  value
-   *                  is a list of lists.
+   *                  value is a list of lists.
    */
   void setPortfolio(HashMap<String, List<List<String>>> portfolio);
+
+  /**
+   * @param portfolio
+   */
+  void setPortfolio(Map<String, List<List<String>>> portfolio);
 
   /**
    * This function returns a list of strings that represent the company names of the stocks in the
@@ -164,10 +171,12 @@ public interface Model {
    */
   LocalDate localDateParser(String currentDate);
 
+
   /**
-   * Save the portfolio to a file
+   * Save the portfolio to a file.
    */
   void savePortfolio();
+
 
   /**
    * It takes a JSON string and returns a map of strings to lists of lists of strings
@@ -182,17 +191,25 @@ public interface Model {
    * Reads the contents of a file and returns it as a string.
    *
    * @param path The path to the file to read from.
-   * @return file in string form
+   * @return A string
    */
   String readFromFile(String path);
 
+
   /**
    * Given a map of lists of lists of strings, return true if the map is a valid portfolio, and
-   * false otherwise.
+   * false
+   * otherwise.
    *
    * @param parsedPortfolio The portfolio that was parsed from the input file.
    * @return A boolean value.
    */
   boolean checkParsedPortfolio(Map<String, List<List<String>>> parsedPortfolio);
 
+  /**
+   * creates an array of all the files in the src\\portfolios\\ directory.
+   *
+   * @return Array of strings containing the files in the mentioned directory.
+   */
+  String[] getListOfPortfolio();
 }

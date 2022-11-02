@@ -2,19 +2,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  */
 public class Json {
-  HashMap<String, List<List<String>>> portfolio;
+  Map<String, List<List<String>>> portfolio;
   List<String> keys;
 
   /**
    * @param portfolio
    * @param keys
    */
-  public Json(HashMap<String, List<List<String>>> portfolio, List<String> keys) {
+  public Json(Map<String, List<List<String>>> portfolio, List<String> keys) {
     this.portfolio = portfolio;
     this.keys = keys;
   }
@@ -72,10 +73,6 @@ public class Json {
     HashMap<String, List<List<String>>> portfolio = new HashMap<>();
     List<String> portfolioNameAndData = Arrays.asList(json.split(":"));
 
-    //sanity check
-    for (String portfolioNameAndDatum : portfolioNameAndData) {
-      System.out.println(portfolioNameAndDatum);
-    }
 
     if (portfolioNameAndData.size() != 2) {
       return null;
