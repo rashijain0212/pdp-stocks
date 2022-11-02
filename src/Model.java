@@ -9,91 +9,105 @@ import java.util.Map;
  * Contains all the data-related logic that the user requires.
  */
 public interface Model {
+
   /**
-   * Gets the current date.
+   * This function returns the current date.
    *
-   * @return the current date as string.
+   * @return A string of the current date.
    */
   String getCurrentDate();
 
   /**
-   * Sets current date
-   * @param currentDate date entered by user
+   * Sets the current date
+   *
+   * @param currentDate The current date in the format of "yyyy-MM-dd"
    */
   void setCurrentDate(String currentDate);
 
   /**
-   * Get the user's portfolio.
+   * Given a list of stocks, return a map of the stocks to their prices.
    *
-   * @return user's portfolio as a HashMap of String and array list.
+   * @return A HashMap with a String as the key and a List of List of Strings as the value.
    */
   HashMap<String, List<List<String>>> getPortfolio();
 
   /**
-   * Sets the portfolio.
-   * @param portfolio
+   * It sets the portfolio of the user.
+   *
+   * @param portfolio A HashMap of the portfolio. The key is the name of the portfolio, and the value
+   *                  is a list of lists.
    */
   void setPortfolio(HashMap<String, List<List<String>>> portfolio);
 
   /**
-   * Gets the name of companies whose stocks are listed.
+   * This function returns a list of strings that represent the company names of the stocks in the
+   * database.
    *
-   * @return a list of companies as List of strings.
+   * @return A list of all the company names in the database.
    */
   List<String> getStockCompanyName();
 
   /**
-   * Retrieve data from text file.
+   * This function reads the contents of a file and stores it in a string.
    */
   void getContentsFromFile();
 
   /**
-   * Converts String to HashMap.
+   * It takes a string of the form "key1=value1,key2=value2,key3=value3" and returns a HashMap with
+   * the keys and values.
    *
-   * @param data string data to be converted.
-   * @return Hashmap of string data.
+   * @param data The string that you want to convert to a HashMap.
+   * @return A HashMap<String, String>
    */
   HashMap<String, String> convertingStringToHashMap(String data);
 
   /**
-   * Checks if the name of portfolio already exists.
+   * Returns true if there is another portfolio with the same name as the one passed in.
    *
-   * @param name name of portfolio to checked.
-   * @return true or false if the name exists or not.
+   * @param name The name of the portfolio.
+   * @return A boolean value.
    */
   boolean hasAnotherPortfolioWithSameName(String name);
 
   /**
-   * Adds the final data to the portfolio.
+   * This function takes in a list of lists of strings, a string, and a string, and adds the data to
+   * the portfolio.
    *
-   * @param dataToAdd   stocks data to be purchased
-   * @param name        name of the stock
-   * @param currentDate date of purchase
+   * @param dataToAdd   A list of lists of strings. Each list of strings represents a row of data.
+   * @param name        The name of the portfolio you want to add data to.
+   * @param currentDate The current date in the format of "MM/dd/yyyy"
    */
   void addsFinalDataToPortfolio(List<List<String>> dataToAdd, String name, String currentDate);
 
   /**
-   * Checks if the company entered by user exists.
+   * Check if a company exists in the database.
    *
-   * @param name name of the company to be checked
-   * @return true or false if the company exists.
+   * @param name The name of the company
+   * @return boolean
    */
   boolean checkIfCompanyExists(String name);
 
   /**
-   * Check if the date is valid.
+   * Given a string, return true if it's a valid date in the format YYYY-MM-DD,
+   * otherwise return false.
    *
-   * @param date date inputted by the user
-   * @return true or false after checking the date
+   * @param date a string representing a date in the format "YYYY-MM-DD"
+   * @return A boolean value.
    */
   boolean isValidDate(String date);
 
   /**
-   * Gets the total stock value by calculating the price and number of stocks.
+   * "Given a portfolio name and a date, return the total value of all the stocks in the portfolio on
+   * that date."
+   * <p>
+   * The function is a bit more complicated than the previous ones. It takes two parameters: a
+   * portfolio name and a date. It returns a double, which is the total value of all the stocks in the
+   * portfolio on that date
    *
-   * @param portfolioName name of the portfolio
-   * @param currentDate   date of portfolio creation
-   * @return Total value of stock
+   * @param portfolioName The name of the portfolio for which the total stock value is to be
+   *                      calculated.
+   * @param currentDate   The date for which the total stock value is to be calculated.
+   * @return The total value of the stocks in the portfolio.
    */
   double getTotalStockValue(String portfolioName, String currentDate);
 
@@ -105,68 +119,80 @@ public interface Model {
   int getPortfolioSize();
 
   /**
-   * Checks if the portfolio exists or not in current session.
-   * @param name name of portfolio to be checked
-   * @return boolean value after matching
+   * Returns true if the portfolio contains a stock with the given name.
+   *
+   * @param name The name of the portfolio you want to check.
+   * @return A boolean value.
    */
   boolean portfolioContainsCertainKey(String name);
 
   /**
-   * Convert Date to string form
+   * Given a day, month, and year, return a string representing the date in the format 'dd/mm/yyyy'.
    *
-   * @param day   day entered by user
-   * @param month month entered by user
-   * @param year  year entered by user
-   * @return date in string form
+   * @param day   The day of the month.
+   * @param month The month of the year (1-12)
+   * @param year  The year of the date.
+   * @return A string of the date in the format of dd/mm/yyyy
    */
   String makeStringDate(int day, int month, int year);
 
   /**
-   * Creates a set of dates for a particular company's data.
+   * This function creates a list of particular company's dates from the start date to the end date.
    */
   void makeListOfDates();
 
   /**
-   * Checks if the data set created in {@makeListOfDates} contains the given date.
-   * @param date date to be checked
-   * @return boolean value if the date exists
+   * Given a date, return true if the set contains the date, false otherwise
+   *
+   * @param date The date to check for in the set.
+   * @return A boolean value.
    */
   boolean setContainsGivenDate(String date);
 
   /**
-   * Gets keys for the portfolio.
+   * Returns an array of all the keys in the portfolio.
    *
-   * @return Array list of string as keys
+   * @return An ArrayList of Strings.
    */
   ArrayList<String> getPortfolioKeys();
 
   /**
-   * Converts the string in local date format yyyy-mm-dd.
-   * @param currentDate date in string
+   * It takes a string, and returns a LocalDate object
+   *
+   * @param currentDate The date you want to parse.
    * @return local date in yyyy-mm-dd format
    */
   LocalDate localDateParser(String currentDate);
 
   /**
-   * Saves the current portfolio.
+   * Save the portfolio to a file
    */
   void savePortfolio();
 
   /**
-   * Parses the json.
-   * @return the file
+   * It takes a JSON string and returns a map of strings to lists of lists of strings
+   *
+   * @param data The JSON data to parse.
+   * @return A HashMap with a String as the key and a List of List of Strings as the value.
    */
   Map<String, List<List<String>>> parseJson(String data);
 
+
   /**
-   * Reads the given file.
-   * @param path path of the file
-   * @return File in string form
+   * Reads the contents of a file and returns it as a string.
+   *
+   * @param path The path to the file to read from.
+   * @return file in string form
    */
   String readFromFile(String path);
 
-
-  // Checking if the parsed portfolio is valid or not.
+  /**
+   * Given a map of lists of lists of strings, return true if the map is a valid portfolio, and false
+   * otherwise
+   *
+   * @param parsedPortfolio The portfolio that was parsed from the input file.
+   * @return A boolean value.
+   */
   boolean checkParsedPortfolio(Map<String, List<List<String>>> parsedPortfolio);
 
 }
