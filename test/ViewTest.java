@@ -18,7 +18,7 @@ public class ViewTest {
   OutputStream outStream;
 
   @Before
-  public void setup(){
+  public void setup() {
     models = new ModelImpl();
     initalOptions = "1.Create Portfolio2.Examine Composition of current Portfolio" +
             "3.Fast forward time4.Determine value of stocks on certain Date" +
@@ -30,16 +30,16 @@ public class ViewTest {
   }
 
   @Test
-  public void initialOptionsTest(){
+  public void initialOptionsTest() {
     int thirdOption = 7;
-    String inputString = ""+thirdOption;
+    String inputString = "" + thirdOption;
 
     input = new ByteArrayInputStream(inputString.getBytes());
 
-    controller = new ControllerImpl(models,viewer,input);
+    controller = new ControllerImpl(models, viewer, input);
     controller.start();
 
-    assertEquals(initalOptions,outStream.toString().replaceAll("\n","")
-                    .replaceAll("\r",""));
+    assertEquals(initalOptions, outStream.toString().replaceAll("\n", "")
+            .replaceAll("\r", ""));
   }
 }

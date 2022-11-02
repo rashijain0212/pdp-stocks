@@ -18,7 +18,7 @@ public class ControllerImplTest {
   MockModelForAddPortfolioData mock;
 
   @Before
-  public void setup(){
+  public void setup() {
     mock = new MockModelForAddPortfolioData();
 
     outStream = new ByteArrayOutputStream();
@@ -26,13 +26,13 @@ public class ControllerImplTest {
   }
 
   @Test
-  public void portfolioCreationTest(){
+  public void portfolioCreationTest() {
     String inputString = "1\n1\nsavings\n3\nApple\n16\n3\nAmazon\n20\n3\nstarbucks\n30\n4\n7";
     String assertVal = "savings Apple 16 Amazon 20 starbucks 30";
     input = new ByteArrayInputStream(inputString.getBytes());
-    controller = new ControllerImpl(mock,viewer,input);
+    controller = new ControllerImpl(mock, viewer, input);
 
     controller.start();
-    assertEquals(assertVal,mock.logGetter());
+    assertEquals(assertVal, mock.logGetter());
   }
 }

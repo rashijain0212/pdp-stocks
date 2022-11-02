@@ -52,6 +52,11 @@ public class MockModelForAddPortfolioData implements Model{
   }
 
   @Override
+  public void setPortfolio(HashMap<String, List<List<String>>> portfolio) {
+
+  }
+
+  @Override
   public List<String> getStockCompanyName() {
     return null;
   }

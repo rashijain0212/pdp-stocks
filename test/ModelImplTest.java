@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import static org.junit.Assert.assertEquals;
-
 public class ModelImplTest {
   Model models;
   Controller controller;
@@ -16,17 +14,16 @@ public class ModelImplTest {
   OutputStream outStream;
 
   @Before
-  public void setUp(){
+  public void setUp() {
     outStream = new ByteArrayOutputStream();
     viewer = new View(new PrintStream(outStream));
     models = new ModelImpl();
   }
 
   @Test
-  public void initialTest(){
-    
-  }
+  public void initialTest() {
 
+  }
 
 
 }
