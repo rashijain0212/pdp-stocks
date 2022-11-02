@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * This is the implementation of a Controller. It has all the working logic
+ */
 public class ControllerImpl implements Controller {
   Scanner sc = new Scanner(System.in);
   View viewer = new View();

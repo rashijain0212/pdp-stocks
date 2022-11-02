@@ -105,7 +105,7 @@ public interface Model {
   int getPortfolioSize();
 
   /**
-   * Checks if the portfolio already exists
+   * Checks if the portfolio exists or not in current session.
    * @param name name of portfolio to be checked
    * @return boolean value after matching
    */
@@ -122,12 +122,12 @@ public interface Model {
   String makeStringDate(int day, int month, int year);
 
   /**
-   * Creates a hashmap of dates.
+   * Creates a set of dates for a particular company's data.
    */
   void makeListOfDates();
 
   /**
-   * Checks of the data contains the given date.
+   * Checks if the data set created in {@makeListOfDates} contains the given date.
    * @param date date to be checked
    * @return boolean value if the date exists
    */
@@ -141,9 +141,9 @@ public interface Model {
   ArrayList<String> getPortfolioKeys();
 
   /**
-   *
-   * @param currentDate
-   * @return
+   * Converts the string in local date format yyyy-mm-dd.
+   * @param currentDate date in string
+   * @return local date in yyyy-mm-dd format
    */
   LocalDate localDateParser(String currentDate);
 
@@ -159,16 +159,14 @@ public interface Model {
   Map<String, List<List<String>>> parseJson(String data);
 
   /**
-   * Reads the given file
+   * Reads the given file.
    * @param path path of the file
    * @return File in string form
    */
   String readFromFile(String path);
 
-  /**
-   * @param parsedPortfolio
-   * @return
-   */
+
+  // Checking if the parsed portfolio is valid or not.
   boolean checkParsedPortfolio(Map<String, List<List<String>>> parsedPortfolio);
 
 }
