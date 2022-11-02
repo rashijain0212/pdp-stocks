@@ -3,6 +3,7 @@ public class Main {
     Model models = new ModelImpl();
     View viewer = new View(System.out);
     ControllerImpl control = new ControllerImpl(models,viewer,System.in);
+    control.start();
     //high priority
     //adding same company stocks multiple times(need to consolidate)
     //finish comments
