@@ -65,7 +65,7 @@ public class ControllerImpl implements Controller {
           break;
         case 7:
           initialOptions = true;
-          viewer.displayAllPortfolioSaved("src\\portfolios\\");
+          viewer.displayAllPortfolioSaved("/portfolios/");
           break;
         default:
           viewer.displaySwitchCaseDefault();

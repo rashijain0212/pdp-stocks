@@ -1,7 +1,10 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class is the implementation of the Model interface.
@@ -80,13 +84,12 @@ public class ModelImpl implements Model {
   @Override
   public void getContentsFromFile() {
     for (String filepath : stockCompanies) {
-      try {
-        data = new String(Files.readAllBytes(Path.of(
-                "src\\stockData\\" + filepath)));
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      stockData.add(convertingStringToHashMap(data));
+      InputStream inputStream = this.getClass().getResourceAsStream("/stockData/" + filepath);
+      InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+      BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+      String linesOfFiles = bufferedReader.lines().collect(Collectors.joining());
+      stockData.add(convertingStringToHashMap(linesOfFiles));
     }
   }
 
@@ -297,7 +300,7 @@ public class ModelImpl implements Model {
   @Override
   public String[] getListOfPortfolio() {
     String[] files;
-    File f = new File("src\\portfolios\\");
+    File f = new File("src/portfolios/");
     files = f.list();
     return files;
   }

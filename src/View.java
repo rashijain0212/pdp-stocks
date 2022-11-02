@@ -22,7 +22,7 @@ public class View {
     this.out.println("5.Upload a portfolio");
     this.out.println("6.List all portfolios");
     this.out.println("7.Exit");
-    this.out.println("Choose one of the five options");
+    this.out.println("Choose one of the seven options");
     this.out.println();
   }
 
