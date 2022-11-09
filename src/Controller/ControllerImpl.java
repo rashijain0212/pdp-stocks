@@ -22,8 +22,8 @@ import View.View;
  */
 public class ControllerImpl implements Controller{
   private final InputStream input;
-  Scanner sc;
-  View view;
+  final Scanner sc;
+  final  View view;
   Model model;
   Command command;
 

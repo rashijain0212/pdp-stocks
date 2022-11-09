@@ -8,9 +8,9 @@ import Model.Model;
 import View.View;
 
 public class HandleFastForwardTime implements Command {
-  Model model;
-  View view;
-  Scanner sc;
+  final Model model;
+  final View view;
+  final Scanner sc;
 
   public HandleFastForwardTime(Model model, View view, Scanner sc) {
     this.model = model;

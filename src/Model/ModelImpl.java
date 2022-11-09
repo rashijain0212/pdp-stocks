@@ -18,29 +18,29 @@ import java.util.Set;
 import OutputDataSource.Json;
 
 public class ModelImpl implements Model{
-  List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt",
+  final List<String> stockCompanies = List.of("AAPL.txt", "AMZN.txt", "ATVI.txt", "BCS.txt",
           "CAJ.txt", "CSCO.txt", "DIS.txt", "JPM.txt", "MCD.txt", "MSFT.txt", "ORCL.txt", "SBUX.txt"
           , "WFC.txt");
 
-  List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS"
+  final List<String> stockCompanyName = List.of("APPLE", "AMAZON", "ACTIVISION", "BARCLAYS"
           , "CANON INC", "CISCO SYSTEMS", "DISNEY", "JP MORGAN", "MCDONALD", "MICROSOFT"
           , "ORACLE", "STARBUCKS", "WELLS FARGO");
 
 
   //ArrayList of HashMap containing StockData of companies with date as key and stock value on
   //that date as value.
-  List<HashMap<String, String>> stockData = new ArrayList<>();
-  String startingDate = "2001-02-02";
+  final List<HashMap<String, String>> stockData = new ArrayList<>();
+  final String startingDate = "2001-02-02";
   //String endingDate = "2022-10-25";
 
   String currentDate = startingDate;
 
-  Set<String> listOfDates = new HashSet<>();
+  final Set<String> listOfDates = new HashSet<>();
   String data;
 
   Map<String, List<List<String>>> portfolio = new HashMap<>();
 
-  List<String> initialOptions = List.of("Create Immutable Portfolio",
+  final List<String> initialOptions = List.of("Create Immutable Portfolio",
           "Examine Composition of current Portfolio",
           "Fast Forward Time","Determine value of stocks on certain Date","Upload a portfolio",
           "List all portfolios","Exit");

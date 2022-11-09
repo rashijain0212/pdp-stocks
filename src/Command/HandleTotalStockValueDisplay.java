@@ -1,13 +1,14 @@
 package Command;
+
 import java.util.Scanner;
 
 import Model.Model;
 import View.View;
 
-public class HandleTotalStockValueDisplay implements Command{
-  Model model;
-  View view;
-  Scanner sc;
+public class HandleTotalStockValueDisplay implements Command {
+  final Model model;
+  final View view;
+  final Scanner sc;
 
   public HandleTotalStockValueDisplay(Model model, View view, Scanner sc) {
     this.model = model;

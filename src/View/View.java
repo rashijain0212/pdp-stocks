@@ -152,14 +152,14 @@ public class View {
    *
    * @param currPortfolio name of current portfolio
    */
-  void displayPortfolioName(String currPortfolio) {
+  public void displayPortfolioName(String currPortfolio) {
     this.out.println("Portfolio: " + currPortfolio);
   }
 
   /**
    * Displays data in table layout.
    */
-  void displayTableLayout() {
+  public void displayTableLayout() {
     this.out.println("Company\t\tStock-Numbers\t\tDate-obtained");
   }
 
@@ -168,14 +168,14 @@ public class View {
    *
    * @param contents content in string form.
    */
-  void displayContentsOfPortfolio(String contents) {
+  public void displayContentsOfPortfolio(String contents) {
     this.out.print(contents + "\t\t\t");
   }
 
   /**
    * Display message if portfolio is empty.
    */
-  void displayPortfolioIsEmpty() {
+  public void displayPortfolioIsEmpty() {
     this.out.println("Portfolio is empty, cannot view composition");
     this.out.println();
   }
@@ -303,7 +303,7 @@ public class View {
   /**
    * This function asks the user for the file path.
    */
-  void askForFilePath() {
+  public void askForFilePath() {
     this.out.println("Enter the file path:");
     this.out.println();
   }
@@ -311,7 +311,7 @@ public class View {
   /**
    * This function displays a message to the user that the file path does not exist.
    */
-  void displayTheFilePathDoesNotExist() {
+  public void displayTheFilePathDoesNotExist() {
     this.out.println("The file path does not exist, Please Enter a valid path");
     this.out.println();
   }
@@ -322,7 +322,7 @@ public class View {
    * is not
    * in proper format.
    */
-  void displayDataNotInProperFormat() {
+  public void displayDataNotInProperFormat() {
     this.out.println("The portfolio provided in the text file is not in proper format," +
             "please look at the documentation");
     this.out.println();

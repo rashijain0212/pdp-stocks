@@ -11,8 +11,8 @@ import java.util.Map;
  * in Json format and creates a hashmap.
  */
 public class Json implements SavingDataSource{
-    Map<String, List<List<String>>> portfolio;
-    List<String> keys;
+    final Map<String, List<List<String>>> portfolio;
+    final List<String> keys;
 
     /**
      * Constructor for the Json class. Initializes the fields portfolio, keys with argument.

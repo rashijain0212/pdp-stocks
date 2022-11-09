@@ -1,4 +1,5 @@
 package Command;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -8,10 +9,10 @@ import java.util.Scanner;
 import Model.Model;
 import View.View;
 
-public class HandlePortfolioCreation implements Command{
-  Model model;
-  View view;
-  Scanner sc;
+public class HandlePortfolioCreation implements Command {
+  final Model model;
+  final View view;
+  final Scanner sc;
 
   public HandlePortfolioCreation(Model model, View view, Scanner sc) {
     this.model = model;
