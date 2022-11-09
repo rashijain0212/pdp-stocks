@@ -18,7 +18,7 @@ public interface Model {
   String getCurrentDate();
 
   /**
-   * Sets the current date
+   * Sets the current date.
    *
    * @param currentDate The current date in the format of "yyyy-MM-dd"
    */
@@ -40,12 +40,8 @@ public interface Model {
    * @param portfolio A HashMap of the portfolio. The key is the name of the portfolio, and the
    *                  value is a list of lists.
    */
-  void setPortfolio(HashMap<String, List<List<String>>> portfolio);
-
-  /**
-   * @param portfolio
-   */
   void setPortfolio(Map<String, List<List<String>>> portfolio);
+
 
   /**
    * This function returns a list of strings that represent the company names of the stocks in the
@@ -65,7 +61,7 @@ public interface Model {
    * the keys and values.
    *
    * @param data The string that you want to convert to a HashMap.
-   * @return A HashMap<String, String>
+   * @return A HashMap of String and String
    */
   HashMap<String, String> convertingStringToHashMap(String data);
 
@@ -149,7 +145,7 @@ public interface Model {
   void makeListOfDates();
 
   /**
-   * Given a date, return true if the set contains the date, false otherwise
+   * Given a date, return true if the set contains the date, false otherwise.
    *
    * @param date The date to check for in the set.
    * @return A boolean value.
@@ -164,7 +160,7 @@ public interface Model {
   ArrayList<String> getPortfolioKeys();
 
   /**
-   * It takes a string, and returns a LocalDate object
+   * It takes a string, and returns a LocalDate object.
    *
    * @param currentDate The date you want to parse.
    * @return local date in yyyy-mm-dd format
@@ -179,7 +175,7 @@ public interface Model {
 
 
   /**
-   * It takes a JSON string and returns a map of strings to lists of lists of strings
+   * It takes a JSON string and returns a map of strings to lists of lists of strings.
    *
    * @param data The JSON data to parse.
    * @return A HashMap with a String as the key and a List of List of Strings as the value.
@@ -207,9 +203,22 @@ public interface Model {
   boolean checkParsedPortfolio(Map<String, List<List<String>>> parsedPortfolio);
 
   /**
-   * creates an array of all the files in the src\\portfolios\\ directory.
+   * creates a List of all the files in the src\\portfolios\\ directory.
    *
-   * @return Array of strings containing the files in the mentioned directory.
+   * @return List of Strings containing the files in the mentioned directory.
    */
-  String[] getListOfPortfolio();
+  List<String> getListOfPortfolio();
+
+  /**
+   * A helper method to round off a number.
+   *
+   * @param val A double value.
+   * @return Double value rounded to nearest decimal place.
+   */
+  Double helper(Double val);
+
+  /**
+   * Creates a directory in the location of current Working directory.
+   */
+  void createADirectory();
 }

@@ -1,10 +1,7 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -15,10 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * This class is the implementation of the Model interface.
+ * Class implementing Model Interface, it also stores all the portfolio in a hashmap. This class
+ * uses a helper Class Json for converting hashmap into json format and vice versa.
  */
 public class ModelImpl implements Model {
 
@@ -34,7 +31,7 @@ public class ModelImpl implements Model {
 
   //ArrayList of HashMap containing StockData of companies with date as key and stock value on
   //that date as value.
-  ArrayList<HashMap<String, String>> stockData = new ArrayList<>();
+  List<HashMap<String, String>> stockData = new ArrayList<>();
   String startingDate = "2001-02-02";
   //String endingDate = "2022-10-25";
 
@@ -64,11 +61,6 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public void setPortfolio(HashMap<String, List<List<String>>> portfolio) {
-    this.portfolio = portfolio;
-  }
-
-  @Override
   public void setPortfolio(Map<String, List<List<String>>> portfolio) {
     this.portfolio = portfolio;
   }
@@ -84,12 +76,17 @@ public class ModelImpl implements Model {
   @Override
   public void getContentsFromFile() {
     for (String filepath : stockCompanies) {
-      InputStream inputStream = this.getClass().getResourceAsStream("/stockData/" + filepath);
-      InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-      BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+      try {
+        Path path = Path.of(Path.of(System.getProperty("user.dir")) +
+                "\\res\\" +
+                "stockData");
+        String files = String.valueOf(path);
 
-      String linesOfFiles = bufferedReader.lines().collect(Collectors.joining());
-      stockData.add(convertingStringToHashMap(linesOfFiles));
+        data = new String(Files.readAllBytes(Path.of(files + "\\" + filepath)));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      stockData.add(convertingStringToHashMap(data));
     }
   }
 
@@ -137,21 +134,27 @@ public class ModelImpl implements Model {
 
     List<String> jsonPortfolios = json.jsonFormatFromHashMap();
 
-    String path = "src\\portfolios\\";
-
-    for (int i = 0; i < jsonPortfolios.size(); i++) {
-      String newPath = path;
-      newPath += names.get(i);
-      newPath += ".txt";
-      try {
-        File myObj = new File(newPath);
-        Files.writeString(Path.of(newPath), jsonPortfolios.get(i));
-        myObj.setReadOnly();
-      } catch (FileNotFoundException e) {
-        //handled
-      } catch (IOException e) {
-        //
+    try {
+      Files.createDirectories(Path.of(Path.of(System.getProperty("user.dir")) + "\\" +
+              "portfolios" + "\\"));
+      Path path = Path.of(Path.of(System.getProperty("user.dir")) + "\\" + "portfolios");
+      //System.out.println(path.toString());
+      for (int i = 0; i < jsonPortfolios.size(); i++) {
+        String newPath = String.valueOf(path);
+        newPath += "\\" + names.get(i);
+        newPath += ".txt";
+        try {
+          File myObj = new File(newPath);
+          Files.writeString(Path.of(newPath), jsonPortfolios.get(i));
+          myObj.setReadOnly();
+        } catch (FileNotFoundException e) {
+          //handled
+        } catch (IOException e) {
+          //
+        }
       }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -219,11 +222,11 @@ public class ModelImpl implements Model {
 
   @Override
   public void makeListOfDates() {
-    Map<String, String> container;
-    for (HashMap<String, String> stockDatum : stockData) {
-      container = stockDatum;
-      container.forEach((key, value) -> listOfDates.add(key));
-    }
+//    Map<String, String> container;
+//    for (HashMap<String, String> stockDatum : stockData) {
+//      container = stockDatum;
+//      container.forEach((key, value) -> listOfDates.add(key));
+//    }
   }
 
   @Override
@@ -266,6 +269,7 @@ public class ModelImpl implements Model {
       return "Failure";
       //throw new RuntimeException(e);
     }
+    //System.out.println(output);
 
     return output.toString();
   }
@@ -298,11 +302,28 @@ public class ModelImpl implements Model {
   }
 
   @Override
-  public String[] getListOfPortfolio() {
-    String[] files;
-    File f = new File("src/portfolios/");
-    files = f.list();
+  public List<String> getListOfPortfolio() {
+    //Path path = Path.of(Path.of(System.getProperty("user.dir")) + "\\" + "portfolios");
+    List<String> files;
+    File f = new File(String.valueOf(Path.of(Path.of(System.getProperty("user.dir"))
+            + "\\" + "portfolios")));
+    files = List.of(f.list());
     return files;
+  }
+
+  @Override
+  public Double helper(Double val) {
+    return Double.valueOf(Math.round(val));
+  }
+
+  @Override
+  public void createADirectory() {
+    try {
+      Files.createDirectories(Path.of(Path.of(System.getProperty("user.dir")) + "\\" +
+              "portfolios" + "\\"));
+    } catch (IOException e) {
+      //
+    }
   }
 
 }

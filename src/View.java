@@ -7,6 +7,11 @@ import java.io.PrintStream;
 public class View {
   private final PrintStream out;
 
+  /**
+   * Constructor for the View Class.
+   *
+   * @param out PrintStream object, required way ex. main method sends System.out.
+   */
   public View(PrintStream out) {
     this.out = new PrintStream(out);
   }
@@ -34,7 +39,7 @@ public class View {
   }
 
   /**
-   * Displays to enter a valid option.
+   * Tells the user to enter a valid option.
    */
   void displaySwitchCaseDefault() {
     this.out.println("Enter an valid option.");
@@ -42,7 +47,7 @@ public class View {
   }
 
   /**
-   * Displays options if user wants to create a new portfolio.
+   * Displays options menu for creating a new Portfolio.
    */
   void portfolioCreation() {
     this.out.println("1.Give a name for the current Portfolio");
@@ -80,7 +85,7 @@ public class View {
   }
 
   /**
-   * display message that name is mandatory for portfolio.
+   * Display message that name is mandatory for portfolio.
    */
   void displayCannotProceedWithoutName() {
     this.out.println("Please Enter a name for the portfolio first.");
@@ -88,7 +93,7 @@ public class View {
   }
 
   /**
-   * Display enter name for portfolio.
+   * Asks the user to enter name for portfolio.
    */
   void displayEnterNameForPortfolio() {
     this.out.println("Enter Name of the Portfolio:");
@@ -104,7 +109,7 @@ public class View {
   }
 
   /**
-   * Display if the portfolio name already exists.
+   * Tells the user that he has created another portfolio with same name.
    */
   void displayAlreadyHaveAnotherPortfolioWithSameName() {
     this.out.println("You already have another Portfolio with the same name.");
@@ -112,7 +117,7 @@ public class View {
   }
 
   /**
-   * Display message for user to enter company name.
+   * Asks the user to enter company name.
    */
   void askForCompanyName() {
     this.out.println("Enter the company name:");
@@ -195,7 +200,7 @@ public class View {
    * This function asks the user to enter the day of the month in number.
    */
   void askForDayOfTheMonth() {
-    this.out.println("Enter the day of the month in number(1-31): ");
+    this.out.println("Enter the day of the month in number(1-31):");
   }
 
   /**
@@ -287,7 +292,7 @@ public class View {
 
 
   /**
-   * This function prints out the path of the file where the portfolio is saved
+   * This function prints out the path of the file where the portfolio is saved.
    *
    * @param path The path where the portfolio is saved.
    */
@@ -325,5 +330,4 @@ public class View {
             "please look at the documentation");
     this.out.println();
   }
-
 }

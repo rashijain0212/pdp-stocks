@@ -5,29 +5,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * A helper class for ModelImpl. It converts a given HashMap to Json and also parses a given string
+ * in Json format and creates a hashmap.
+ * It converts a HashMap of String and List of List of String to a List of String in JSON format.
  */
+
 public class Json {
   Map<String, List<List<String>>> portfolio;
   List<String> keys;
 
   /**
-   * @param portfolio
-   * @param keys
+   * Constructor for the Json class. Initializes the field's portfolio, keys with argument.
+   *
+   * @param portfolio Map of string and a nested List of strings, represents the portfolio data.
+   * @param keys      List of strings, containing keys(names of companies) of the portfolio.
    */
   public Json(Map<String, List<List<String>>> portfolio, List<String> keys) {
     this.portfolio = portfolio;
     this.keys = keys;
   }
 
+  /**
+   * A default constructor for the Json class. Initializes field with default values.
+   */
   public Json() {
     portfolio = new HashMap<>();
     keys = new ArrayList<>();
   }
 
-  /**
-   * @return
-   */
   List<String> jsonFormatFromHashMap() {
     List<String> jsonPortfolio = new ArrayList<>();
 
@@ -64,10 +69,6 @@ public class Json {
     return jsonPortfolio;
   }
 
-  /**
-   * @param json
-   * @return
-   */
   HashMap<String, List<List<String>>> jsonParser(String json) {
 
     HashMap<String, List<List<String>>> portfolio = new HashMap<>();
@@ -91,7 +92,9 @@ public class Json {
     for (List<String> furtherSplittingCompanyDatum : furtherSplittingCompanyData) {
       List<String> adder = new ArrayList<>();
       for (String temp : furtherSplittingCompanyDatum) {
-        if (possibleWaste.contains(temp)) continue;
+        if (possibleWaste.contains(temp)) {
+          continue;
+        }
         adder.add(temp);
       }
       actualPortfolioContents.add(adder);
@@ -100,8 +103,6 @@ public class Json {
     String companyNameWithNoise = portfolioNameAndData.get(0);
     String companyName = companyNameWithNoise.substring(2, companyNameWithNoise.length() - 1);
     portfolio.put(companyName, actualPortfolioContents);
-
-
     return portfolio;
   }
 }

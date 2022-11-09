@@ -43,12 +43,12 @@ public interface Controller {
   /**
    * This function adds a company stock to the user's portfolio.
    *
-   * @return ArrayList<String> The list of name of company with number of stocks.
+   * @return ArrayList of String The list of name of company with number of stocks.
    */
   List<String> handleAddACompanyStock();
 
   /**
-   * Get the name of the portfolio
+   * Get the name of the portfolio.
    *
    * @return The name of the portfolio.
    */

@@ -1,24 +1,18 @@
+/**
+ * This is the class which contains main method. Creates an object for view with PrintStream
+ * as System.out. Creates an object for Model Interface and provides all these objects
+ * as parameter to controller. Calls the controller's start method, which is the starting point
+ * in the application.
+ */
 public class Main {
-  public static void main(String[] args){
+  /**
+   * It creates a new Model, View, and Controller, and then starts the controller.
+   * @param args accepts a single argument of type String array
+   */
+  public static void main(String[] args) {
     Model models = new ModelImpl();
     View viewer = new View(System.out);
-    ControllerImpl control = new ControllerImpl(models,viewer,System.in);
+    ControllerImpl control = new ControllerImpl(models, viewer, System.in);
     control.start();
-    //high priority
-    //adding same company stocks multiple times(need to consolidate)
-    //finish comments
-
-
-    //final changes
-    //change arraylist and hashmap
-    //display values in more well manner
-    //details to tell the user
-    //the files created using this program is read only, so if you try to create another
-    //portfolio with same name, it will not be overwritten. Nothing will happen if you use already
-    //existing portfolio name.
-
-    //mention in deliverable that we support only certain company stocks
-
-    //each text file provided as input should contain only one portfolio
   }
 }

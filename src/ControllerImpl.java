@@ -2,7 +2,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
@@ -10,14 +9,25 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * This is the implementation of a Controller. It has all the working logic
+ * This class implements the Controller interface. It has two main fields of objects of classes
+ * Model,View. This class tells the model to perform calculations, store results and
+ * this class tells the view to display certain information.
  */
 public class ControllerImpl implements Controller {
+  private final InputStream input;
   Scanner sc;
   View viewer;
   Model models;
-  private final InputStream input;
 
+  /**
+   * Constructor for the ControllerImpl class. Initializes the field viewer,models,sc with
+   * appropriate parameters.
+   *
+   * @param models Model object.
+   * @param viewer View object.
+   * @param in     InputStream object,main method gives System.in,ByteArrayInputStream is used
+   *               for test.
+   */
   public ControllerImpl(Model models, View viewer, InputStream in) {
     this.models = models;
     this.viewer = viewer;
@@ -27,9 +37,11 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void start() {
+    models.createADirectory();
+
     //tell the model to get the data ready.
     models.getContentsFromFile();
-    models.makeListOfDates();
+//    models.makeListOfDates();
 
     //tell the view to display starting screen
     boolean initialOptions = false;
@@ -65,7 +77,7 @@ public class ControllerImpl implements Controller {
           break;
         case 7:
           initialOptions = true;
-          viewer.displayAllPortfolioSaved("/portfolios/");
+          //viewer.displayAllPortfolioSaved("src\\portfolios\\");
           break;
         default:
           viewer.displaySwitchCaseDefault();
@@ -117,25 +129,7 @@ public class ControllerImpl implements Controller {
           }
           //check if the company name exists
           if (models.checkIfCompanyExists(newData.get(0))) {
-            if (dataToAdd.toArray().length > 0) {
-              boolean check = false;
-              for (int i = 0; i < dataToAdd.toArray().length; i++) {
-                if (Objects.equals(dataToAdd.get(i).get(0), newData.get(0))) {
-                  check = true;
-                  BigDecimal totalValue =
-                          BigDecimal.valueOf(Double.parseDouble(dataToAdd.get(i).get(1)) +
-                                  Double.parseDouble(newData.get(1)));
-                  dataToAdd.get(i).set(1, totalValue.toPlainString()
-                  );
-                }
-              }
-              if (!check) {
-                dataToAdd.add(newData);
-              }
-            } else {
-              dataToAdd.add(newData);
-            }
-
+            dataToAdd.add(newData);
           } else {
             viewer.displayNoSuchCompanyExist();
           }
@@ -144,7 +138,7 @@ public class ControllerImpl implements Controller {
           portfolioOptionExit = true;
           if (dataToAdd.size() != 0) {
             addPortfolioData(dataToAdd, name, currentDate);
-            //  models.savePortfolio();
+            models.savePortfolio();
             break;
           } else {
             name = "";
@@ -162,6 +156,7 @@ public class ControllerImpl implements Controller {
   @Override
   public void handlePortfolioComposition() {
     Map<String, List<List<String>>> portfolio = models.getPortfolio();
+
     if (portfolio.size() == 0) {
       viewer.displayPortfolioIsEmpty();
     } else {
@@ -274,7 +269,6 @@ public class ControllerImpl implements Controller {
     }
   }
 
-
   @Override
   public void handleShowCompanies() {
     List<String> stockCompanyName = models.getStockCompanyName();
@@ -294,12 +288,13 @@ public class ControllerImpl implements Controller {
     viewer.askForNumberOfStocks();
     try {
       numberOfStocks = sc.nextDouble();
+      numberOfStocks = models.helper(numberOfStocks);
     } catch (InputMismatchException e) {
       viewer.displayOnlyIntegers();
       sc.next();
     }
-    String[] array = {companyName, new BigDecimal(numberOfStocks).toPlainString()};
-    List<String> dataToAdd = new ArrayList<>(Arrays.asList(array));
+    List<String> dataToAdd = List.of(companyName, new BigDecimal(numberOfStocks)
+            .toPlainString());
     if (dataToAdd.get(0).length() == 0) {
       viewer.displayNameCannotBeEmpty();
       dataToAdd = null;
@@ -340,7 +335,8 @@ public class ControllerImpl implements Controller {
 
   @Override
   public void handleDateSelection() {
-    LocalDate currentDate = models.localDateParser(models.getCurrentDate());
+    models.localDateParser(models.getCurrentDate());
+    LocalDate currentDate;
 
     String dateChange;
     int day;
@@ -408,7 +404,8 @@ public class ControllerImpl implements Controller {
       return "Failure";
     }
     viewer.displayTotalStockValue(portfolioName, models.getCurrentDate(),
-            new BigDecimal(totalValue).toPlainString());
+            new BigDecimal(totalValue)
+                    .toPlainString());
     return "Success";
   }
 
@@ -473,16 +470,17 @@ public class ControllerImpl implements Controller {
         boolean checker = models.setContainsGivenDate(dateWishToChange);
         if (checker) {
           double amount = models.getTotalStockValue(portfolioName, dateWishToChange);
-          viewer.displayTotalStockValue(portfolioName, dateWishToChange,
-                  new BigDecimal(amount).toPlainString());
+          viewer.displayTotalStockValue(portfolioName, dateWishToChange, new BigDecimal(amount)
+                  .toPlainString());
         } else {
           viewer.displayNoStockDataForGivenDate();
         }
       } else {
         viewer.displayDateIsNotValid();
       }
-    } else if (choice == 2) ;
-    else {
+    } else if (choice == 2) {
+      //
+    } else {
       viewer.displaySwitchCaseDefault();
     }
   }
@@ -508,12 +506,13 @@ public class ControllerImpl implements Controller {
       return;
     }
     models.setPortfolio(parsedPortfolio);
+    models.savePortfolio();
   }
 
   @Override
   public void handleShowPortfolio() {
-    String[] files = models.getListOfPortfolio();
-    if (files.length == 0) {
+    List<String> files = models.getListOfPortfolio();
+    if (files == null || files.size() == 0) {
       viewer.displayNoPortfolio();
     } else {
       for (String file : files) {
