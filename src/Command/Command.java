@@ -13,5 +13,5 @@ public interface Command {
    * Imposes all classes implementing this interface to have this method execute, which follow
    * similar pattern of code, get input, ask model to process, tell view to display.
    */
-  Model execute(Model model, Scanner sc,View view);
+  Model execute();
 }

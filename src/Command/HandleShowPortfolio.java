@@ -6,8 +6,18 @@ import Model.Model;
 import View.View;
 
 public class HandleShowPortfolio implements Command{
+  Model model;
+  View view;
+  Scanner sc;
+
+  public HandleShowPortfolio(Model model, View view, Scanner sc) {
+    this.model = model;
+    this.view = view;
+    this.sc = sc;
+  }
+
   @Override
-  public Model execute(Model model, Scanner sc, View view) {
+  public Model execute() {
     return null;
   }
 }

@@ -64,22 +64,22 @@ public class ControllerImpl implements Controller{
       }
       switch (choice) {
         case 1:
-          command = new HandlePortfolioCreation();
+          command = new HandlePortfolioCreation(model,view,sc);
           break;
         case 2:
-          command = new HandlePortfolioComposition();
+          command = new HandlePortfolioComposition(model,view,sc);
           break;
         case 3:
-          command = new HandleFastForwardTime();
+          command = new HandleFastForwardTime(model,view,sc);
           break;
         case 4:
-          command = new HandleTotalStockValueDisplay();
+          command = new HandleTotalStockValueDisplay(model,view,sc);
           break;
         case 5:
-          command = new HandleUploadFile();
+          command = new HandleUploadFile(model,view,sc);
           break;
         case 6:
-          command = new HandleShowPortfolio();
+          command = new HandleShowPortfolio(model,view,sc);
           break;
         case 7:
           initialOptions = true;
@@ -89,7 +89,7 @@ public class ControllerImpl implements Controller{
           break;
       }
       if(!(command ==null)){
-        model = command.execute(model,sc,view);
+        model = command.execute();
       }
     }
   }
