@@ -185,7 +185,7 @@ public class View {
    *
    * @param currentDate Date entered.
    */
-  void displaySelectDateOption(String currentDate) {
+  public void displaySelectDateOption(String currentDate) {
     this.out.println("Current Date: " + currentDate);
     this.out.println("1.Select Date");
     this.out.println("2.Exit");
@@ -196,35 +196,35 @@ public class View {
   /**
    * This function asks the user to enter the day of the month in number.
    */
-  void askForDayOfTheMonth() {
+  public void askForDayOfTheMonth() {
     this.out.println("Enter the day of the month in number(1-31):");
   }
 
   /**
    * Display message to input month.
    */
-  void askForMonth() {
+  public void askForMonth() {
     this.out.println("Enter the month in number(1-12):");
   }
 
   /**
    * Display message to input year.
    */
-  void askForYear() {
+  public void askForYear() {
     this.out.println("Enter the year you wish to jump to(2001 - 2022):");
   }
 
   /**
    * Display message to input valid inputs.
    */
-  void displayEnterValidDetailsForDate() {
+  public void displayEnterValidDetailsForDate() {
     this.out.println("Enter valid details.");
   }
 
   /**
    * Display message to show that entered date is invalid.
    */
-  void displayDateIsNotValid() {
+  public void displayDateIsNotValid() {
     this.out.println("The entered date is not a valid date.");
     this.out.println();
   }
@@ -282,7 +282,7 @@ public class View {
   /**
    * Display is no stock is present for the entered day.
    */
-  void displayNoStockDataForGivenDate() {
+  public void displayNoStockDataForGivenDate() {
     this.out.println("There is no stock data for given date, please enter another date");
     this.out.println();
   }
